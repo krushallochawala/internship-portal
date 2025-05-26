@@ -5,28 +5,28 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <h:head>
-        <meta charset="utf-8"/>
-        <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>Job board HTML-5 Template </title>
-        <meta name="description" content=""/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="manifest" href="site.webmanifest"/>
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>JobGrids - Job Portal HTML Template.</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.svg" />
+        <!-- Place favicon.ico in the root directory -->
+
+        <!-- Web Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+        
+        <!-- Font Awesome icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
 
         <!-- CSS here -->
         <h:outputStylesheet library="assets" name="css/bootstrap.min.css"/>
-        <h:outputStylesheet library="assets" name="css/owl.carousel.min.css"/>
-        <h:outputStylesheet library="assets" name="css/flaticon.css"/>
-        <h:outputStylesheet library="assets" name="css/price_rangs.css"/>
-        <h:outputStylesheet library="assets" name="css/slicknav.css"/>
-        <h:outputStylesheet library="assets" name="css/animate.min.css"/>
-        <h:outputStylesheet library="assets" name="css/magnific-popup.css"/>
-        <h:outputStylesheet library="assets" name="css/fontawesome-all.min.css"/>
-        <h:outputStylesheet library="assets" name="css/themify-icons.css"/>
-        <h:outputStylesheet library="assets" name="css/slick.css"/>
-        <h:outputStylesheet library="assets" name="css/nice-select.css"/>
-        <h:outputStylesheet library="assets" name="css/style.css"/>
-
+        <h:outputStylesheet library="assets" name="css/LineIcons.2.0.css"/>
+        <h:outputStylesheet library="assets" name="css/animate.css"/>
+        <h:outputStylesheet library="assets" name="css/tiny-slider.css"/>
+        <h:outputStylesheet library="assets" name="css/glightbox.min.css"/>
+        <h:outputStylesheet library="assets" name="css/main.css"/>
+        <h:outputStylesheet library="assets" name="css/custom.css"/>
 
 
     </h:head>
@@ -45,35 +45,52 @@
             <ui:insert name="bottom">Bottom</ui:insert>
         </div>
 
-        <!-- All JS Custom Plugins Link Here -->
-        <h:outputScript library="assets" name="js/vendor/modernizr-3.5.0.min.js"/>
-        <!-- Jquery, Popper, Bootstrap -->
-        <h:outputScript library="assets" name="js/vendor/jquery-1.12.4.min.js"/>
-        <h:outputScript library="assets" name="js/popper.min.js"/>
+
+        <!-- ========================= JS here ========================= -->
         <h:outputScript library="assets" name="js/bootstrap.min.js"/>
-        <!-- Jquery Mobile Menu -->
-        <h:outputScript library="assets" name="js/jquery.slicknav.min.js"/>
-        <!-- Jquery Slick , Owl-Carousel Plugins -->
-        <h:outputScript library="assets" name="js/owl.carousel.min.js"/>
-        <h:outputScript library="assets" name="js/slick.min.js"/>
-        <h:outputScript library="assets" name="js/price_rangs.js"/>
-        <!-- One Page, Animated-HeadLin -->
         <h:outputScript library="assets" name="js/wow.min.js"/>
-        <h:outputScript library="assets" name="js/animated.headline.js"/>
-        <h:outputScript library="assets" name="js/jquery.magnific-popup.js"/>
-        <!-- Scrollup, nice-select, sticky -->
-        <h:outputScript library="assets" name="js/jquery.scrollUp.min.js"/>
-        <h:outputScript library="assets" name="js/jquery.nice-select.min.js"/>
-        <h:outputScript library="assets" name="js/jquery.sticky.js"/>
-        <!-- Contact JS -->
-        <h:outputScript library="assets" name="js/contact.js"/>
-        <h:outputScript library="assets" name="js/jquery.form.js"/>
-        <h:outputScript library="assets" name="js/jquery.validate.min.js"/>
-        <h:outputScript library="assets" name="js/mail-script.js"/>
-        <h:outputScript library="assets" name="js/jquery.ajaxchimp.min.js"/>
-        <!-- Jquery Plugins, main Jquery -->	
-        <h:outputScript library="assets" name="js/plugins.js"/>
+        <h:outputScript library="assets" name="js/tiny-slider.js"/>
+        <h:outputScript library="assets" name="js/glightbox.min.js"/>
         <h:outputScript library="assets" name="js/main.js"/>
+
+        <h:outputScript>
+            //====== Clients Logo Slider
+            tns({
+            container: '.client-logo-carousel',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+            0: {
+            items: 1,
+            },
+            540: {
+            items: 2,
+            },
+            768: {
+            items: 3,
+            },
+            992: {
+            items: 4,
+            },
+            1170: {
+            items: 6,
+            }
+            }
+            });
+            //========= glightbox
+            GLightbox({
+            'href': 'https://www.youtube.com/watch?v=cz4z8CyvDas',
+            'type': 'video',
+            'source': 'youtube', //vimeo, youtube or local
+            'width': 900,
+            'autoplayVideos': true,
+            });
+        </h:outputScript>
 
     </h:body>
 

@@ -1,0 +1,76 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 26-May-2025, 10:12:55 pm
+    Author     : DELL
+*/
+
+.about-us .content-left {
+    position: relative;
+    padding-right: 60px;
+}
+
+.about-us .content-left .single-img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.about-us .content-left .media-body {
+    background-color: rgb(32, 66, 227);
+    display: inline-block;
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: rgba(35, 38, 45, 0.15) 0px 1rem 3rem !important;
+    padding: 40px 30px 48px;
+    border-radius: 5px;
+}
+
+.about-us .content-left .media-body h6 {
+    font-size: 22px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+    color: rgb(255, 255, 255);
+}
+
+.about-us .content-left .media-body p {
+    color: rgb(255, 255, 255);
+}
+
+.about-us .content-left .media-body i {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.27);
+    display: block;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.about-us .content-right {
+    padding-right: 70px;
+    padding-left: 30px;
+}
+
+.about-us .content-right h2 {
+    font-size: 32px;
+    margin-bottom: 50px;
+    line-height: 45px;
+    text-transform: capitalize;
+    position: relative;
+    font-weight: 700;
+}
+
+.about-us .content-right .single-list {
+    position: relative;
+    padding-left: 80px;
+    margin-bottom: 50px;
+}
+
+.about-us .content-right .single-list .list-bod{
+    font-size: 17px;
+}
