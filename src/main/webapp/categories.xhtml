@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:component="jakarta.faces.composite/component">
+
+    <body>
+
+        <ui:composition template="./Template/template.xhtml">
+
+            <ui:define name="top">
+                <ui:include src="./Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="breadcrumbs overlay">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="breadcrumbs-content">
+                                    <h1 class="page-title">Job Categories</h1>
+                                    <p>Business plan draws on a wide range of knowledge from different business<br /> disciplines.
+                                        Business draws on a wide range of different business .</p>
+                                </div>
+                                <ul class="breadcrumb-nav">
+                                    <li><a href="faces/index.xhtml">Home</a></li>
+                                    <li>Categories</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <component:topcategories />
+
+                <section class="all-categories section">
+                    <div class="container">
+                        <h2 class="categories-title">Browse All Categories</h2>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                                <h3 class="cat-title">Business <span>(33 Sub Categories)</span></h3>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <ul>
+                                    <li><a href="browse-jobs.html">Accounting &amp; Finance</a></li>
+                                    <li><a href="browse-jobs.html">Asset Management</a></li>
+                                    <li><a href="browse-jobs.html">Capital Markets</a></li>
+                                    <li><a href="browse-jobs.html">Commercial Banking</a></li>
+                                    <li><a href="browse-jobs.html">Commodities</a></li>
+                                    <li><a href="browse-jobs.html">Consultiong</a></li>
+                                    <li><a href="browse-jobs.html">Corporate</a></li>
+                                    <li><a href="browse-jobs.html">Credit</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <ul>
+                                    <li><a href="browse-jobs.html">Debt/Fixed Income</a></li>
+                                    <li><a href="browse-jobs.html">Derivatives</a></li>
+                                    <li><a href="browse-jobs.html">Equities</a></li>
+                                    <li><a href="browse-jobs.html">FX &amp; Money Markets</a></li>
+                                    <li><a href="browse-jobs.html">Global Custody</a></li>
+                                    <li><a href="browse-jobs.html">Covernment</a></li>
+                                    <li><a href="browse-jobs.html">Graduates &amp; Internships</a></li>
+                                    <li><a href="browse-jobs.html">Hedge Funds</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <ul>
+                                    <li><a href="browse-jobs.html">Information Services</a></li>
+                                    <li><a href="browse-jobs.html">Insurance</a></li>
+                                    <li><a href="browse-jobs.html">Investment Consulting</a></li>
+                                    <li><a href="browse-jobs.html">Investment Banking</a></li>
+                                    <li><a href="browse-jobs.html">Islamic Finance</a></li>
+                                    <li><a href="browse-jobs.html">Operations</a></li>
+                                    <li><a href="browse-jobs.html">Private Banking</a></li>
+                                    <li><a href="browse-jobs.html">Private Equity &amp; Venture Capital</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <ul>
+                                    <li><a href="browse-jobs.html">Quantitative Analytics</a></li>
+                                    <li><a href="browse-jobs.html">Real Estate</a></li>
+                                    <li><a href="browse-jobs.html">Research</a></li>
+                                    <li><a href="browse-jobs.html">Retail Banking</a></li>
+                                    <li><a href="browse-jobs.html">Risk Management</a></li>
+                                    <li><a href="browse-jobs.html">Trading</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="./Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
