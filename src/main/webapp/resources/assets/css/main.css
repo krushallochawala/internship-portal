@@ -2661,8 +2661,8 @@ ol {
 
 .job-category .single-cat {
   text-align: center;
-  padding: 30px;
-  border: 1px dashed #eee;
+  padding: 53px;
+  border: 2px dashed #eee;
   margin: 15px 0;
   -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
@@ -2689,7 +2689,7 @@ ol {
 .job-category .single-cat h3 {
   display: block;
   margin-top: 20px;
-  font-size: 15px;
+  font-size: 20px;
   color: #081828;
   font-weight: 500;
   -webkit-transition: all 0.4s ease;
@@ -4341,7 +4341,7 @@ ol {
 	Footer CSS
 ========================================*/
 .footer {
-  background-color: #fff;
+  background-color: #f6f9fc;
   z-index: 2;
   position: relative;
 }

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:component="jakarta.faces.composite/component">
+
+    <body>
+
+        <ui:composition template="./Template/template.xhtml">
+
+            <ui:define name="top">
+                <ui:include src="./Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="breadcrumbs overlay">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="breadcrumbs-content">
+                                    <h1 class="page-title">Browse Internships</h1>
+                                    <p>Business plan draws on a wide range of knowledge from different business<br /> disciplines.
+                                            Business draws on a wide range of different business .</p>
+                                </div>
+                                <ul class="breadcrumb-nav">
+                                    <li><a href="faces/index.xhtml">Home</a></li>
+                                    <li>Browse Job</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <component:internshipSection />
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="./Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
