@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Login</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="./Template/template.xhtml">
+            <ui:define name="top">
+                <header class="header other-page py-3">
+                    <div class="container navbar navbar-area">
+                        <div class="d-flex justify-content-start">
+                            <a class="navbar-brand logo" href="index.xhtml">
+                                <h:graphicImage library="assets" name="images/logo/logo.svg" alt="Logo" style="height: 60px;" />
+                            </a>
+                        </div>
+                    </div>
+                </header>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container mt-5 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="card p-4 shadow">
+                                <h4 class="text-center mb-4 text-primary">Login</h4>
+
+                                <h:form id="loginForm">
+                                    <div class="mb-3">
+                                        <p:outputLabel for="email" value="Email" />
+                                        <p:inputText id="email" value="#{loginCDIBean.email}" required="true" styleClass="form-control" />
+                                        <p:message for="email" styleClass="text-danger" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <p:outputLabel for="password" value="Password" />
+                                        <p:password id="password" value="#{loginCDIBean.password}" required="true" styleClass="form-control" />
+                                        <p:message for="password" styleClass="text-danger" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <p:outputLabel for="role" value="Role" />
+                                        <p:selectOneMenu id="role" value="#{loginCDIBean.role}" styleClass="form-select w-100">
+                                            <f:selectItem itemLabel="Select Role" itemValue="" />
+                                            <f:selectItem itemLabel="Student" itemValue="student" />
+                                            <f:selectItem itemLabel="Company" itemValue="company" />
+                                        </p:selectOneMenu>
+                                        <p:message for="role" styleClass="text-danger" />
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <p:commandButton value="Login" action="#{loginCDIBean.login}" styleClass="btn btn-primary px-5" ajax="false" />
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="./Template/footer.xhtml" />
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
