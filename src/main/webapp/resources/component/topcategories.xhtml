@@ -2,41 +2,55 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core"
+      xmlns:h="jakarta.faces.html">
 
     <!-- INTERFACE -->
     <cc:interface>
+        <!-- mode should be either 'limited' or 'all' -->
+        <cc:attribute name="mode" type="java.lang.String" default="limited" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <!-- Start Job Category Area -->
-        <section class="job-category section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="section-title">
-                            <span class="wow fadeInDown" data-wow-delay=".2s">Job Category</span>
-                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Choose Your Desire Category</h2>
-                            <p class="wow fadeInUp" data-wow-delay=".6s">
-                                Discover opportunities that match your passion and expertise. Whether you're looking to launch your career in IT, marketing, design, finance, or healthcare — explore the top categories and find internships tailored just for you. Start your journey towards a brighter future today!
-                            </p>
+        <h:panelGroup layout="block"
+                      style="#{cc.attrs.mode eq 'limited' ? 'background-color:#f6f9fc;' : ''}">
+            <section class="job-category section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title">
+                                <span class="wow fadeInDown" data-wow-delay=".2s">Internship Category</span>
+                                <h2 class="wow fadeInUp" data-wow-delay=".4s">Choose Your Desire Category</h2>
+                                <p class="wow fadeInUp" data-wow-delay=".6s">
+                                    Discover opportunities that match your passion and expertise. Whether you're looking to launch your career in IT, marketing, design, finance, or healthcare — explore the top categories and find internships tailored just for you. Start your journey towards a brighter future today!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cat-head">
+                        <div class="row">
+                            <f:event type="preRenderComponent" listener="#{categoryCDIBean.setMode(cc.attrs.mode)}"/>
+                            <ui:repeat value="#{categoryCDIBean.categories}" var="cat" varStatus="status">
+                                <div class="col-lg-3 col-md-6 col-12 cat-box">
+                                    <div class="single-cat wow fadeInUp"
+                                         data-wow-delay="#{(status.index mod 4) * 0.2}s">
+                                        <h:form>
+                                            <h:commandLink action="#{internshipCDIBean.getInternshipByCat(cat.id)}"
+                                                           style="display:block; text-align:center; color:inherit; text-decoration:none;">
+                                                <h3 class="py-4">#{cat.category}</h3>
+                                            </h:commandLink>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </ui:repeat>
                         </div>
                     </div>
                 </div>
-                <div class="cat-head">
-                    <div class="row">
-                        <ui:repeat value="#{categoryCDIBean.allCategories}" var="cat" varStatus="status">
-                            <div class="col-lg-3 col-md-6 col-12 cat-box">
-                                <a href="job-details.html" class="single-cat wow fadeInUp" data-wow-delay="#{(status.index mod 4) * 0.2}s">
-                                    <h3 class="py-4">#{cat.category}</h3>
-                                </a>
-                            </div>
-                        </ui:repeat>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </h:panelGroup>
         <!-- /End Job Category Area -->
     </cc:implementation>
 </html>

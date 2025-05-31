@@ -21,9 +21,33 @@ import java.util.List;
 public class categoryCDIBean implements Serializable {
 
     categoryClient client = new categoryClient();
+    String mode = "limited";
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+    
+    public List<Categories> getAllLimitedCategories(){
+        return client.getLimitedCategories(new GenericType<List<Categories>>(){});
+    }
     
     public List<Categories> getAllCategories(){
-        return client.getLimitedCategories(new GenericType<List<Categories>>(){});
+        return client.getAllCategories(new GenericType<List<Categories>>(){});
+    }
+    
+    public List<Categories> getCategories(){
+        List<Categories> source;
+        
+        if("all".equalsIgnoreCase(mode)){
+            source = getAllCategories();
+        }else{
+            source = getAllLimitedCategories();
+        }
+        return source;
     }
     
 }
