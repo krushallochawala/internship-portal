@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Student Sign Up</title>
+    </h:head>
+
+    <h:body>
+
+        <ui:composition template="./Template/template.xhtml">
+            <ui:define name="top">
+                <header class="header other-page py-3">
+                    <div class="container navbar navbar-area">
+                        <div class="d-flex justify-content-start">
+                            <a class="navbar-brand logo" href="index.xhtml">
+                                <h:graphicImage library="assets" name="images/logo/logo.svg" alt="Logo" style="height: 60px;" />
+                            </a>
+                        </div>
+                    </div>
+                </header>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container mt-5 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 col-lg-8">
+                            <div class="card shadow">
+                                <div class="card-header text-center bg-primary text-white">
+                                    <h4 class="mb-0">Student Sign Up</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h:form id="studentSignupForm">
+
+                                        <!-- First Name, Middle Name, Last Name (unchanged) -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-4">
+                                                <label for="firstName" class="form-label">First Name *</label>
+                                                <p:inputText id="firstName" value="#{studentCDIBean.student.firstName}" required="true" styleClass="form-control" />
+                                                <p:message for="firstName" styleClass="text-danger" />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="middleName" class="form-label">Middle Name</label>
+                                                <p:inputText id="middleName" value="#{studentCDIBean.student.middleName}" styleClass="form-control" />
+                                                <p:message for="middleName" styleClass="text-danger" />
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="lastName" class="form-label">Last Name *</label>
+                                                <p:inputText id="lastName" value="#{studentCDIBean.student.lastName}" required="true" styleClass="form-control" />
+                                                <p:message for="lastName" styleClass="text-danger" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Email and Password -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="email" class="form-label">Email *</label>
+                                                <p:inputText id="email" value="#{studentCDIBean.student.email}" required="true" styleClass="form-control" />
+                                                <p:message for="email" styleClass="text-danger" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="password" class="form-label">Password *</label>
+                                                <p:password id="password" value="#{studentCDIBean.student.password}" required="true" styleClass="form-control" />
+                                                <p:message for="password" styleClass="text-danger" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Contact and Gender -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="contact" class="form-label">Contact *</label>
+                                                <p:inputText id="contact" value="#{studentCDIBean.student.contact}" required="true" styleClass="form-control" />
+                                                <p:message for="contact" styleClass="text-danger" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="gender" class="form-label">Gender *</label>
+                                                <p:selectOneMenu id="gender" value="#{studentCDIBean.student.gender}" styleClass="form-select w-100">
+                                                    <f:selectItem itemLabel="Select Gender" itemValue="" />
+                                                    <f:selectItem itemLabel="Male" itemValue="Male" />
+                                                    <f:selectItem itemLabel="Female" itemValue="Female" />
+                                                </p:selectOneMenu>
+                                                <p:message for="gender" styleClass="text-danger" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Portfolio and LinkedIn -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="portfolio" class="form-label">Portfolio URL</label>
+                                                <p:inputText id="portfolio" value="#{studentCDIBean.student.portfolioUrl}" styleClass="form-control" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="linkedin" class="form-label">LinkedIn URL</label>
+                                                <p:inputText id="linkedin" value="#{studentCDIBean.student.linkedinUrl}" styleClass="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Resume and Profile -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="resume" class="form-label">Resume</label>
+                                                <p:fileUpload id="resume" mode="simple" styleClass="form-control w-100" auto="true" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="profile" class="form-label">Profile Image</label>
+                                                <p:fileUpload id="profile" mode="simple" styleClass="form-control w-100" auto="true" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <p:commandButton value="Register" action="#{studentCDIBean.register()}" styleClass="btn btn-primary px-5" ajax="false" />
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="./Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

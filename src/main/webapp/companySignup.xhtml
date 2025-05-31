@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Company Sign Up</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="./Template/template.xhtml">
+            <ui:define name="top">
+                <header class="header other-page py-3">
+                    <div class="container navbar navbar-area">
+                        <div class="d-flex justify-content-start">
+                            <a class="navbar-brand logo" href="index.xhtml">
+                                <h:graphicImage library="assets" name="images/logo/logo.svg" alt="Logo" style="height: 60px;" />
+                            </a>
+                        </div>
+                    </div>
+                </header>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container mt-5 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 col-lg-8">
+                            <div class="card shadow">
+                                <div class="card-header text-center bg-primary text-white">
+                                    <h4 class="mb-0">Company Sign Up</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h:form id="companySignupForm">
+                                        <!-- Company Name & Contact Person -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="name" class="form-label">Company Name *</label>
+                                                <p:inputText id="name" value="#{companyCDIBean.company.name}" required="true" styleClass="form-control"/>
+                                                <p:message for="name" styleClass="text-danger"/>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="contactPerson" class="form-label">Contact Person *</label>
+                                                <p:inputText id="contactPerson" value="#{companyCDIBean.company.contactPerson}" required="true" styleClass="form-control"/>
+                                                <p:message for="contactPerson" styleClass="text-danger"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email & Password -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="email" class="form-label">Email *</label>
+                                                <p:inputText id="email" value="#{companyCDIBean.company.email}" required="true" styleClass="form-control"/>
+                                                <p:message for="email" styleClass="text-danger"/>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="password" class="form-label">Password *</label>
+                                                <p:password id="password" value="#{companyCDIBean.company.password}" required="true" styleClass="form-control"/>
+                                                <p:message for="password" styleClass="text-danger"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Contact & Website -->
+                                        <div class="row mb-3">
+                                            <div class="col-sm-6">
+                                                <label for="contact" class="form-label">Contact Number *</label>
+                                                <p:inputText id="contact" value="#{companyCDIBean.company.contact}" required="true" styleClass="form-control"/>
+                                                <p:message for="contact" styleClass="text-danger"/>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="website" class="form-label">Website</label>
+                                                <p:inputText id="website" value="#{companyCDIBean.company.website}" styleClass="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Address -->
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Address *</label>
+                                            <p:inputTextarea id="address" value="#{companyCDIBean.company.address}" required="true" rows="3" styleClass="form-control"/>
+                                            <p:message for="address" styleClass="text-danger"/>
+                                        </div>
+
+                                        <!-- Logo -->
+                                        <div class="mb-4">
+                                            <label for="logo" class="form-label">Company Logo</label>
+                                            <p:fileUpload id="logo" mode="simple" auto="true" styleClass="form-control w-100"/>
+                                        </div>
+
+                                        <!-- Register Button -->
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <p:commandButton value="Register" action="#{companyCDIBean.register()}" styleClass="btn btn-primary px-5" ajax="false"/>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="./Template/footer.xhtml"/>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
