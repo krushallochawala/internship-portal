@@ -346,6 +346,19 @@ find-job .single-job .job-button ul li a:hover {
     z-index: 3;
 }
 
+
+body .signup-btn .ui-button.ui-button-text-icon-left .ui-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -0.5rem;
+    left: 1.5rem;
+}
+
+.form-header{
+   box-shadow: rgba(0, 0, 0, 0.043) 0px 16.4421px 41.1053px 0px; 
+}
+
 job-details .job-details-inner {
     padding: 40px;
     border-radius: 6px;
