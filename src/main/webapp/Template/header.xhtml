@@ -13,7 +13,7 @@
                         <div class="col-lg-12">
                             <nav class="navbar navbar-expand-lg">
                                 <a class="navbar-brand logo" href="index.xhtml">
-                                    <h:graphicImage library="assets" name="images/logo/logo.svg" alt="Logo" />
+                                    <h:graphicImage library="assets" name="images/logo/logo.png" alt="Logo" />
                                 </a>
 
                                 <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
@@ -32,10 +32,13 @@
                                         <i class="fas fa-lock"></i>Login
                                     </h:link>
 
-                                    <h:form>
-                                        <p:menuButton value="Sign Up" icon="pi pi-user" styleClass="btn btn-primary">
-                                            <p:menuitem value="As Student" icon="pi pi-user" outcome="studentSignup"/>
-                                            <p:menuitem value="As Company" icon="pi pi-briefcase" outcome="companySignup"/>
+                                    <h:form styleClass="d-inline-block">
+                                        <p:menuButton value="Sign Up" icon="pi pi-user"
+                                                      styleClass="btn btn-primary dropdown-toggle signup-btn"
+                                                      buttonStyleClass="btn btn-primary"
+                                                      style="border:none;">
+                                            <p:menuitem value="As Student" icon="pi pi-user" outcome="studentSignup" />
+                                            <p:menuitem value="As Company" icon="pi pi-briefcase" outcome="companySignup" />
                                         </p:menuButton>
                                     </h:form>
                                 </div>
@@ -45,40 +48,5 @@
                 </div>
             </div>
         </header>
-
-        <!-- ✅ LOGIN DIALOG (Anywhere in body) -->
-        <p:dialog header="Login" widgetVar="loginDialog" modal="true" closable="true" resizable="false" draggable="false">
-            <h:form id="loginForm">
-                <div class="p-fluid">
-
-                    <div class="field mb-3">
-                        <p:outputLabel for="email" value="Email" />
-                        <p:inputText id="email" value="#{loginCDIBean.email}" required="true" styleClass="form-control"/>
-                        <p:message for="email" />
-                    </div>
-
-                    <div class="field mb-3">
-                        <p:outputLabel for="password" value="Password" />
-                        <p:password id="password" value="#{loginCDIBean.password}" required="true" styleClass="form-control"/>
-                        <p:message for="password" />
-                    </div>
-
-                    <div class="field mb-3">
-                        <p:outputLabel for="role" value="Role" />
-                        <p:selectOneMenu id="role" value="#{loginCDIBean.role}" styleClass="form-select">
-                            <f:selectItem itemLabel="Select Role" itemValue="" />
-                            <f:selectItem itemLabel="Student" itemValue="student" />
-                            <f:selectItem itemLabel="Company" itemValue="company" />
-                        </p:selectOneMenu>
-                        <p:message for="role" />
-                    </div>
-
-                    <div class="text-center">
-                        <p:commandButton value="Login" action="#{loginCDIBean.login}" styleClass="btn btn-primary px-4" ajax="false"/>
-                    </div>
-                </div>
-            </h:form>
-        </p:dialog>
-
     </h:body>
 </html>
