@@ -203,7 +203,7 @@ find-job .single-job .job-button ul li a:hover {
 
 .contact-us {
     position: relative;
-    background-color: #f6f9fc;
+    background-color: #fff;
     padding-bottom: 0;
 }
 
@@ -344,4 +344,162 @@ find-job .single-job .job-button ul li a:hover {
     border-radius: 4px;
     position: relative;
     z-index: 3;
+}
+
+job-details .job-details-inner {
+    padding: 40px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    background-color: #fff;
+}
+
+.job-details .job-details-head {
+    position: relative;
+    z-index: 1;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #EDEDED;
+}
+
+.job-details .job-details-head .salary-type .salary-range {
+    font-weight: 500;
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+    color: #7E8890;
+}
+
+.job-details .job-details-head .badge {
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+    position: relative;
+    background: #2042e314;
+    color: #2042e3;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-weight: 400;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.job-details .job-details-head .content .meta {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+    color: #7E8890;
+    display: block;
+    margin-top: 10px;
+}
+
+.job-details .job-details-head li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.job-details .job-details-head li a {
+    color: #2042e3;
+    font-weight: 500;
+}
+
+.job-details .job-details-head li i {
+    color: #2042e3;
+}
+
+.job-details .job-details-body h6 {
+    font-size: 20px;
+}
+
+.job-details .job-details-body p {
+    margin: 20px 0;
+}
+
+.job-details .job-details-body ul {
+    margin-left: 10px;
+}
+
+.job-details .job-details-body ul li {
+    display: block;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.job-details .job-details-sidebar .sidebar-widget {
+    padding: 40px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    margin-bottom: 30px;
+}
+
+.job-details .job-details-sidebar .sidebar-widget {
+    padding: 40px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    margin-bottom: 30px;
+}
+
+.job-details .job-details-sidebar .sidebar-widget .title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1;
+    position: relative;
+    padding-left: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-transform: capitalize;
+}
+
+.job-details .job-details-sidebar .sidebar-widget .list-unstyled li {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.job-details .job-details-sidebar .sidebar-widget .list-unstyled li strong {
+    color: #081828;
+    font-weight: 600;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.job-details .job-details-sidebar .sidebar-widget:last-child {
+    margin-bottom: 0;
+}
+
+.job-details .job-details-sidebar .sidebar-widget .title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1;
+    position: relative;
+    padding-left: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-transform: capitalize;
+}
+
+.mapouter {
+    position: relative;
+    text-align: right;
+    height: 300px;
+    width: 100%;
+}
+
+.gmap_canvas {
+    overflow: hidden;
+    background: none !important;
+    height: 300px;
+    width: 100%;
+}
+
+.myContent{
+    font-size: 18px;
+}
+
+.internshipContent{
+    font-size: 15px;
 }

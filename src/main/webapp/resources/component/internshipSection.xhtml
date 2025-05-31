@@ -2,10 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:cc="jakarta.faces.composite">
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core">
 
     <!-- INTERFACE -->
     <cc:interface>
+        <!-- mode should be either 'limited' or 'all' -->
+        <cc:attribute name="mode" type="java.lang.String" default="limited" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -28,179 +32,61 @@
                     </div>
                 </div>
                 <div class="single-head">
-                    <div class="row">
-                        <div class="col-lg-6 col-12">
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Software Engineer</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="fas fa-rupee-sign"></i> Stipend - 25000</li>
-                                        <li><i class="fas fa-rupee-sign"></i> Paid</li>
-                                        <li><i class="fas fa-map-marker-alt"></i> New York</li>
-                                        <li>Open</li>
-                                    </ul>
+                    <f:event type="preRenderComponent" listener="#{internshipCDIBean.setMode(cc.attrs.mode)}"/>
+                    <ui:repeat value="#{internshipCDIBean.groupedInternships}" var="internshipRow">
+                        <div class="row">
+                            <ui:repeat value="#{internshipRow}" var="internship">
+                                <div class="col-lg-6 col-12">
+                                    <!-- Single Job -->
+                                    <div class="single-job wow fadeInUp" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+                                        <div class="job-content">
+                                            <h4>
+                                                <h:form>
+                                                    <h:outputLink value="internshipDetail.xhtml">
+                                                        <f:param name="id" value="#{internship.id}" />
+                                                        #{internship.title}
+                                                    </h:outputLink>
+                                                </h:form>
+                                            </h4>
+                                            <p class="internshipContent">#{internship.description}</p>
+                                            <ul>
+                                                <h:panelGroup rendered="#{not empty internship.stipend}">
+                                                    <li>
+                                                        <i class="fas fa-rupee-sign"></i> Stipend - #{internship.stipend}
+                                                    </li>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{internship.paid}">
+                                                    <li>
+                                                        <i class="fas fa-rupee-sign"></i> Paid
+                                                    </li>
+                                                </h:panelGroup>
+                                                <li><i class="fas fa-map-marker-alt"></i> #{internship.location}</li>
+                                                <li>#{internship.internshipType}</li>
+                                                <li>#{internship.status}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="job-button">
+                                            <ul>
+                                                <li>
+                                                    <h:form>
+                                                        <h:commandLink action="#{internshipCDIBean.getInternshipById(internship.id)}" value="Apply" />
+                                                    </h:form>
+                                                </li>
+                                                <li><span>#{internship.internshipTime}</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>full time</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Graphics Design</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> designhub.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> Washington, USA</li>
-                                    </ul>
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>Intern</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Ui/Ux Design</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> uddesign.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> Cupertino, USA</li>
-                                    </ul>
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>Part Time</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Web Developer</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> webinner.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> Delaware, USA</li>
-                                    </ul>
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>Intern</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
+                            </ui:repeat>
                         </div>
-                        <div class="col-lg-6 col-12">
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Digital Marketer</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> marketers.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> New York, USA</li>
-                                    </ul>
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>Part Time</span></li>
-                                    </ul>
-                                </div>
+                    </ui:repeat>
+                    <h:panelGroup rendered="#{cc.attrs.mode eq 'limited'}">
+                        <div class="row mt-5">
+                            <div class="col-12 text-center">
+                                <a href="#{request.contextPath}/internships.xhtml" class="explore-more">Explore More Internships </a>
                             </div>
-                            <!-- End Single Job -->
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Sales Manager</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> winbrans.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> Delaware, USA</li>
-                                    </ul>
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>full time</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Product Designer</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> winbrans.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> New York, USA</li>
-                                    </ul>
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>full time</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
-                            <!-- Single Job -->
-                            <div class="single-job wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                                <div class="job-content">
-                                    <h4><a href="job-details.html">Android Developer</a></h4>
-                                    <p>We are looking for Enrollment Advisors who are looking to take 30-35 appointments per
-                                        week. All leads are pre-scheduled. </p>
-                                    <ul>
-                                        <li><i class="lni lni-website"></i><a href="#"> androidplex.com</a></li>
-                                        <li><i class="lni lni-dollar"></i> $20k - $25k</li>
-                                        <li><i class="lni lni-map-marker"></i> Cupertino, USA</li>
-                                    </ul>
-
-                                </div>
-                                <div class="job-button">
-                                    <ul>
-                                        <li><a href="job-details.html">Apply</a></li>
-                                        <li><span>Part Time</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Job -->
                         </div>
-                    </div>
-                </div>                
-                <div class="row mt-5">
-                    <div class="col-12 text-center">
-                        <a href="all-internships.html" class="explore-more">Explore More Internships </a>
-                    </div>
+                    </h:panelGroup>
                 </div>
             </div>
         </section>

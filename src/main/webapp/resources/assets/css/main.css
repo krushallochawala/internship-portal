@@ -1004,7 +1004,7 @@ ol {
 }
 
 .section-title p {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
 }
 
@@ -2042,7 +2042,7 @@ ol {
 }
 
 .hero-area .hero-text p {
-  font-size: 15px;
+  font-size: 18px;
   line-height: 24px;
 }
 
@@ -2558,9 +2558,9 @@ ol {
 /*======================================
     Job Category CSS
 ========================================*/
-.job-category {
+/*.job-category {
   background-color: #f6f9fc;
-}
+}*/
 
 .job-category.style2 .cat-head {
   padding: 0;
@@ -2667,6 +2667,8 @@ ol {
   -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
   display: block;
+  height: 200px;
+  overflow: hidden;
 }
 
 .job-category .single-cat:hover {
@@ -2688,7 +2690,7 @@ ol {
 
 .job-category .single-cat h3 {
   display: block;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 20px;
   color: #081828;
   font-weight: 500;
