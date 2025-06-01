@@ -36,18 +36,21 @@
                                 <h4 class="text-center mb-4 text-primary">Login</h4>
 
                                 <h:form id="loginForm">
+                                    <!-- Email Field -->
                                     <div class="mb-3">
                                         <p:outputLabel for="email" value="Email" />
                                         <p:inputText id="email" value="#{loginCDIBean.email}" required="true" styleClass="form-control" />
                                         <p:message for="email" styleClass="text-danger" />
                                     </div>
 
+                                    <!-- Password Field -->
                                     <div class="mb-3">
                                         <p:outputLabel for="password" value="Password" />
                                         <p:password id="password" value="#{loginCDIBean.password}" required="true" styleClass="form-control" />
                                         <p:message for="password" styleClass="text-danger" />
                                     </div>
 
+                                    <!-- Role Field -->
                                     <div class="mb-3">
                                         <p:outputLabel for="role" value="Role" />
                                         <p:selectOneMenu id="role" value="#{loginCDIBean.role}" styleClass="form-select w-100">
@@ -58,10 +61,45 @@
                                         <p:message for="role" styleClass="text-danger" />
                                     </div>
 
-                                    <div class="text-center mt-4">
-                                        <p:commandButton value="Login" action="#{loginCDIBean.login}" styleClass="btn btn-primary px-5" ajax="false" />
+                                    <div class="text-center mt-3">
+                                        <p:commandLink value="Forgot Password?"
+                                                       onclick="PF('forgotPwdDialog').show(); return false;"
+                                                       styleClass="text-primary"
+                                                       style="font-size: 0.95rem; text-decoration: underline;" />
                                     </div>
+
+                                    <!-- Login Button: Full Width -->
+                                    <div class="mt-3">
+                                        <p:commandButton value="Login"
+                                                         action="#{loginCDIBean.login}"
+                                                         styleClass="btn btn-primary w-100 py-2"
+                                                         ajax="false" />
+                                    </div>
+                                    <!-- Forgot Password Dialog -->
+                                    <p:dialog header="Reset Password"
+                                              widgetVar="forgotPwdDialog"
+                                              modal="true"
+                                              draggable="false"
+                                              closable="true"
+                                              resizable="false"
+                                              width="400">
+
+                                        <h:panelGrid columns="1" cellpadding="5" style="width: 100%;">
+                                            <p:outputLabel for="forgotEmail" value="Enter your registered email:" />
+                                            <p:inputText id="forgotEmail" value="#{loginCDIBean.forgotEmail}" required="true" styleClass="form-control" />
+                                            <p:message for="forgotEmail" styleClass="text-danger" />
+
+                                            <p:commandButton value="Submit"
+                                                             action="#{loginCDIBean.sendResetLink}"
+                                                             styleClass="btn btn-primary w-100 mt-2"
+                                                             oncomplete="PF('forgotPwdDialog').hide();"
+                                                             update="@form"
+                                                             ajax="true" />
+                                        </h:panelGrid>
+                                    </p:dialog>
+
                                 </h:form>
+
                             </div>
                         </div>
                     </div>
@@ -72,5 +110,6 @@
                 <ui:include src="./Template/footer.xhtml" />
             </ui:define>
         </ui:composition>
+
     </h:body>
 </html>
