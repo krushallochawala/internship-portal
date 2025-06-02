@@ -34,22 +34,24 @@
                     <div class="row justify-content-center">
                         <div class="col-md-10 col-lg-8">
                             <div class="card shadow">
-                                <div class="card-header text-center bg-primary text-white">
-                                    <h4 class="mb-0">Company Sign Up</h4>
+                                <div class="card-header text-center form-card-header text-white">
+                                    <h4 class="mb-0 form-card-header">Company Sign Up</h4>
                                 </div>
-                                <div class="card-body">
-                                    <h:form id="companySignupForm">
+                                <div class="card-body pt-4">
+                                    <h:form id="companySignupForm" enctype="multipart/form-data">
                                         <!-- Company Name & Contact Person -->
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
                                                 <label for="name" class="form-label">Company Name *</label>
-                                                <p:inputText id="name" value="#{companyCDIBean.company.name}" required="true" styleClass="form-control"/>
-                                                <p:message for="name" styleClass="text-danger"/>
+                                                <p:inputText id="name" value="#{companyCDIBean.company.name}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* Company Name is required"/>
+                                                <p:message for="name" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="contactPerson" class="form-label">Contact Person *</label>
-                                                <p:inputText id="contactPerson" value="#{companyCDIBean.company.contactPerson}" required="true" styleClass="form-control"/>
-                                                <p:message for="contactPerson" styleClass="text-danger"/>
+                                                <p:inputText id="contactPerson" value="#{companyCDIBean.company.contactPerson}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* Contact Person is required"/>
+                                                <p:message for="contactPerson" styleClass="field-message" display="text" />
                                             </div>
                                         </div>
 
@@ -57,13 +59,15 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
                                                 <label for="email" class="form-label">Email *</label>
-                                                <p:inputText id="email" value="#{companyCDIBean.company.email}" required="true" styleClass="form-control"/>
-                                                <p:message for="email" styleClass="text-danger"/>
+                                                <p:inputText id="email" value="#{companyCDIBean.company.email}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* Email is required"/>
+                                                <p:message for="email" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="password" class="form-label">Password *</label>
-                                                <p:password id="password" value="#{companyCDIBean.company.password}" required="true" styleClass="form-control"/>
-                                                <p:message for="password" styleClass="text-danger"/>
+                                                <p:password id="password" value="#{companyCDIBean.company.password}" required="true" 
+                                                            styleClass="form-control" requiredMessage="* Password is required"/>
+                                                <p:message for="password" styleClass="field-message" display="text" />
                                             </div>
                                         </div>
 
@@ -71,8 +75,9 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
                                                 <label for="contact" class="form-label">Contact Number *</label>
-                                                <p:inputText id="contact" value="#{companyCDIBean.company.contact}" required="true" styleClass="form-control"/>
-                                                <p:message for="contact" styleClass="text-danger"/>
+                                                <p:inputText id="contact" value="#{companyCDIBean.company.contact}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* Contact is required"/>
+                                                <p:message for="contact" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="website" class="form-label">Website</label>
@@ -83,20 +88,23 @@
                                         <!-- Address -->
                                         <div class="mb-3">
                                             <label for="address" class="form-label">Address *</label>
-                                            <p:inputTextarea id="address" value="#{companyCDIBean.company.address}" required="true" rows="3" styleClass="form-control"/>
-                                            <p:message for="address" styleClass="text-danger"/>
+                                            <p:inputTextarea id="address" value="#{companyCDIBean.company.address}" required="true" 
+                                                             rows="3" styleClass="form-control" requiredMessage="* Address is required"/>
+                                            <p:message for="address" styleClass="field-message" display="text" />
                                         </div>
 
                                         <!-- Logo -->
                                         <div class="mb-4">
-                                            <label for="logo" class="form-label">Company Logo</label>
-                                            <p:fileUpload id="logo" mode="simple" auto="true" styleClass="form-control w-100"/>
+                                            <label for="logo" class="form-label">Company Logo *</label>
+                                            <p:fileUpload id="logo" value="#{companyCDIBean.logo}" mode="simple" auto="false" 
+                                                          styleClass="form-control w-100" accept="image/*"/>
+                                            <h:outputText value="#{companyCDIBean.logoError}" style="color:red;" rendered="#{not empty companyCDIBean.logoError}" />
                                         </div>
 
                                         <!-- Register Button -->
                                         <div class="row">
                                             <div class="col-12 text-center">
-                                                <p:commandButton value="Register" action="#{companyCDIBean.register()}" styleClass="btn btn-primary px-5" ajax="false"/>
+                                                <p:commandButton value="Register" action="#{companyCDIBean.addCompany()}" styleClass="btn custom-login-btn px-5" ajax="false"/>
                                             </div>
                                         </div>
                                     </h:form>

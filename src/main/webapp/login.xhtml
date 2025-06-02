@@ -33,45 +33,48 @@
                     <div class="row justify-content-center">
                         <div class="col-md-6">
                             <div class="card p-4 mt-5 mb-5 shadow">
-                                <h4 class="text-center mb-4 text-primary">Login</h4>
+                                <h4 class="text-center mb-4 login-signup-content">Login</h4>
 
                                 <h:form id="loginForm">
-                                    <!-- Email Field -->
+                                    <p:growl id="growl" showDetail="true" life="3000" globalOnly="true"/>
                                     <div class="mb-3">
                                         <p:outputLabel for="email" value="Email" />
-                                        <p:inputText id="email" value="#{loginCDIBean.email}" required="true" styleClass="form-control" />
-                                        <p:message for="email" styleClass="text-danger" />
+                                        <p:inputText id="email" value="#{loginCDIBean.loginRequest.email}" required="true" 
+                                                     styleClass="form-control" requiredMessage="* Email is required" />
+                                        <p:message for="email" styleClass="field-message" display="text" />
                                     </div>
 
                                     <!-- Password Field -->
                                     <div class="mb-3">
                                         <p:outputLabel for="password" value="Password" />
-                                        <p:password id="password" value="#{loginCDIBean.password}" required="true" styleClass="form-control" />
-                                        <p:message for="password" styleClass="text-danger" />
+                                        <p:password id="password" value="#{loginCDIBean.loginRequest.password}" required="true" 
+                                                    styleClass="form-control" requiredMessage="* Password is required" />
+                                        <p:message for="password" styleClass="field-message" display="text" />
                                     </div>
 
                                     <!-- Role Field -->
                                     <div class="mb-3">
                                         <p:outputLabel for="role" value="Role" />
-                                        <p:selectOneMenu id="role" value="#{loginCDIBean.role}" styleClass="form-select w-100">
+                                        <p:selectOneMenu id="role" value="#{loginCDIBean.loginRequest.role}" styleClass="form-select w-100"
+                                                         required="true" requiredMessage="* Select Role">
                                             <f:selectItem itemLabel="Select Role" itemValue="" />
-                                            <f:selectItem itemLabel="Student" itemValue="student" />
-                                            <f:selectItem itemLabel="Company" itemValue="company" />
+                                            <f:selectItems value="#{loginCDIBean.allRoles}" var="r" itemLabel="#{r.role}" itemValue="#{r.role}" />
                                         </p:selectOneMenu>
-                                        <p:message for="role" styleClass="text-danger" />
+                                        <p:message for="role" styleClass="field-message" display="text" />
                                     </div>
-
+ 
                                     <div class="text-center mt-3">
                                         <p:commandLink value="Forgot Password?"
                                                        onclick="PF('forgotPwdDialog').show(); return false;"
                                                        styleClass="text-primary"
                                                        style="font-size: 0.95rem; text-decoration: underline;" />
+
                                     </div>
 
                                     <!-- Login Button: Full Width -->
                                     <div class="mt-3">
                                         <p:commandButton value="Login"
-                                                         action="#{loginCDIBean.login}"
+                                                         action="#{loginCDIBean.login()}"
                                                          styleClass="btn btn-primary w-100 py-2"
                                                          ajax="false" />
                                     </div>

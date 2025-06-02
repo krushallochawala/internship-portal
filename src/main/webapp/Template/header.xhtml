@@ -27,19 +27,38 @@
 
                                 <!-- ✅ LOGIN & SIGNUP -->
                                 <div class="button d-flex gap-2 align-items-center">
-                                    <h:link outcome="login.xhtml" styleClass="login">
-                                        <i class="fas fa-lock"></i>Login
-                                    </h:link>
+                                    <!-- ✅ Show email if logged in -->
+                                    <h:panelGroup rendered="#{loginCDIBean.loggedIn}">
+                                        <!-- Divider -->
+                                        <div
+                                            class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">
+                                            |</div>
+                                        <h:form>
+                                        <p:menuButton value="#{loginCDIBean.profileEmail}" icon="pi pi-user"
+                                                      styleClass="dropdown-toggle profile-text">
 
-                                    <h:form styleClass="d-inline-block">
-                                        <p:menuButton value="Sign Up" icon="pi pi-user"
-                                                      styleClass="btn btn-primary dropdown-toggle signup-btn"
-                                                      buttonStyleClass="btn btn-primary"
-                                                      style="border:none;">
-                                            <p:menuitem value="As Student" icon="pi pi-user" outcome="studentSignup" />
-                                            <p:menuitem value="As Company" icon="pi pi-briefcase" outcome="companySignup" />
+                                            <p:menuitem value="My Profile" icon="pi pi-user" />
+                                            <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
                                         </p:menuButton>
-                                    </h:form>
+                                        </h:form>
+                                    </h:panelGroup>
+
+                                    <!-- ✅ Show login/signup if not logged in -->
+                                    <h:panelGroup rendered="#{not loginCDIBean.loggedIn}">
+                                        <h:link outcome="login.xhtml" styleClass="login">
+                                            <i class="fas fa-lock"></i>Login
+                                        </h:link>
+
+                                        <h:form styleClass="d-inline-block">
+                                            <p:menuButton value="Sign Up" icon="pi pi-user"
+                                                          styleClass="btn btn-primary dropdown-toggle signup-btn"
+                                                          buttonStyleClass="btn btn-primary"
+                                                          style="border:none;">
+                                                <p:menuitem value="As Student" icon="pi pi-user" outcome="studentSignup" />
+                                                <p:menuitem value="As Company" icon="pi pi-briefcase" outcome="companySignup" />
+                                            </p:menuButton>
+                                        </h:form>
+                                    </h:panelGroup>
                                 </div>
                             </nav>
 
