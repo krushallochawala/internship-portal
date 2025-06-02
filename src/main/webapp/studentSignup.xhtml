@@ -35,28 +35,31 @@
                     <div class="row justify-content-center">
                         <div class="col-md-10 col-lg-8">
                             <div class="card shadow">
-                                <div class="card-header text-center bg-primary text-white">
-                                    <h4 class="mb-0">Student Sign Up</h4>
+                                <div class="card-header text-center form-card-header text-white">
+                                    <h4 class="mb-0 form-card-header">Student Sign Up</h4>
                                 </div>
-                                <div class="card-body">
-                                    <h:form id="studentSignupForm">
+                                <div class="card-body pt-4">
+                                    <h:form id="studentSignupForm" enctype="multipart/form-data">
 
                                         <!-- First Name, Middle Name, Last Name (unchanged) -->
                                         <div class="row mb-3">
                                             <div class="col-sm-4">
                                                 <label for="firstName" class="form-label">First Name *</label>
-                                                <p:inputText id="firstName" value="#{studentCDIBean.student.firstName}" required="true" styleClass="form-control" />
-                                                <p:message for="firstName" styleClass="text-danger" />
+                                                <p:inputText id="firstName" value="#{studentCDIBean.student.firstName}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* FirstName is required" />
+                                                <p:message for="firstName" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-4">
                                                 <label for="middleName" class="form-label">Middle Name</label>
-                                                <p:inputText id="middleName" value="#{studentCDIBean.student.middleName}" styleClass="form-control" />
-                                                <p:message for="middleName" styleClass="text-danger" />
+                                                <p:inputText id="middleName" value="#{studentCDIBean.student.middleName}" required="true"
+                                                             styleClass="form-control" requiredMessage="* MiddleName is required" />
+                                                <p:message for="middleName" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-4">
                                                 <label for="lastName" class="form-label">Last Name *</label>
-                                                <p:inputText id="lastName" value="#{studentCDIBean.student.lastName}" required="true" styleClass="form-control" />
-                                                <p:message for="lastName" styleClass="text-danger" />
+                                                <p:inputText id="lastName" value="#{studentCDIBean.student.lastName}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* LastName is required" />
+                                                <p:message for="lastName" styleClass="field-message" display="text" />
                                             </div>
                                         </div>
 
@@ -64,13 +67,15 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
                                                 <label for="email" class="form-label">Email *</label>
-                                                <p:inputText id="email" value="#{studentCDIBean.student.email}" required="true" styleClass="form-control" />
-                                                <p:message for="email" styleClass="text-danger" />
+                                                <p:inputText id="email" value="#{studentCDIBean.student.email}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* Email is required" />
+                                                <p:message for="email" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="password" class="form-label">Password *</label>
-                                                <p:password id="password" value="#{studentCDIBean.student.password}" required="true" styleClass="form-control" />
-                                                <p:message for="password" styleClass="text-danger" />
+                                                <p:password id="password" value="#{studentCDIBean.student.password}" required="true" 
+                                                            styleClass="form-control" requiredMessage="* Password is required" />
+                                                <p:message for="password" styleClass="field-message" display="text" />
                                             </div>
                                         </div>
 
@@ -78,17 +83,19 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
                                                 <label for="contact" class="form-label">Contact *</label>
-                                                <p:inputText id="contact" value="#{studentCDIBean.student.contact}" required="true" styleClass="form-control" />
-                                                <p:message for="contact" styleClass="text-danger" />
+                                                <p:inputText id="contact" value="#{studentCDIBean.student.contact}" required="true" 
+                                                             styleClass="form-control" requiredMessage="* Contact is required"/>
+                                                <p:message for="contact" styleClass="field-message" display="text" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="gender" class="form-label">Gender *</label>
-                                                <p:selectOneMenu id="gender" value="#{studentCDIBean.student.gender}" styleClass="form-select w-100">
+                                                <p:selectOneMenu id="gender" value="#{studentCDIBean.student.gender}" required="true"
+                                                                 styleClass="form-select w-100" requiredMessage="* Gender is required">
                                                     <f:selectItem itemLabel="Select Gender" itemValue="" />
                                                     <f:selectItem itemLabel="Male" itemValue="Male" />
                                                     <f:selectItem itemLabel="Female" itemValue="Female" />
                                                 </p:selectOneMenu>
-                                                <p:message for="gender" styleClass="text-danger" />
+                                                <p:message for="gender" styleClass="field-message" display="text" />
                                             </div>
                                         </div>
 
@@ -107,19 +114,23 @@
                                         <!-- Resume and Profile -->
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
-                                                <label for="resume" class="form-label">Resume</label>
-                                                <p:fileUpload id="resume" mode="simple" styleClass="form-control w-100" auto="true" />
+                                                <label for="resume" class="form-label">Resume *</label>
+                                                <p:fileUpload id="resume" value="#{studentCDIBean.resume}" mode="simple" styleClass="form-control w-100" 
+                                                              auto="false" accept="image/*" />
+                                                <h:outputText value="#{studentCDIBean.resumeError}" style="color:red;" rendered="#{not empty studentCDIBean.resumeError}" />
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="profile" class="form-label">Profile Image</label>
-                                                <p:fileUpload id="profile" mode="simple" styleClass="form-control w-100" auto="true" />
+                                                <label for="profile" class="form-label">Profile Image *</label>
+                                                <p:fileUpload id="profile" value="#{studentCDIBean.profileImage}" mode="simple" styleClass="form-control w-100" 
+                                                              auto="false" accept="image/*" />
+                                                <h:outputText value="#{studentCDIBean.profileImageError}" style="color:red;" rendered="#{not empty studentCDIBean.profileImageError}" />
                                             </div>
                                         </div>
 
                                         <!-- Submit Button -->
                                         <div class="row">
                                             <div class="col-12 text-center">
-                                                <p:commandButton value="Register" action="#{studentCDIBean.register()}" styleClass="btn btn-primary px-5" ajax="false" />
+                                                <p:commandButton value="Register" action="#{studentCDIBean.addStudent()}" styleClass="btn custom-login-btn px-5" ajax="false" />
                                             </div>
                                         </div>
                                     </h:form>

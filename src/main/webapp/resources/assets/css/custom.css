@@ -516,3 +516,36 @@ job-details .job-details-inner {
 .internshipContent{
     font-size: 15px;
 }
+
+.login-signup-content{
+    color: #2042e3;
+}
+.custom-login-btn{
+    background-color: #2042e3 !important;
+    border-color: #4A90E2 !important;
+    color: white !important;
+}
+
+.form-card-header{
+    background-color: #2042e3 !important;
+    color: white;
+}
+
+.field-message {
+    background: none !important;
+    border: none !important;
+}
+
+.field-message span {
+    display: inline;
+    color: red;
+    font-size: 15px;
+}
+
+.ui-menubutton.profile-text > .ui-button {
+    background-color: white;
+    border: none;
+    color: black;
+    box-shadow: none;
+}
+
