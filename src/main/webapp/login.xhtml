@@ -79,6 +79,30 @@
                                                          ajax="false" />
                                     </div>
 
+                                    <!-- Forgot Password Dialog -->
+                                    <p:dialog header="Reset Password"
+                                              widgetVar="forgotPwdDialog"
+                                              modal="true"
+                                              draggable="false"
+                                              closable="true"
+                                              resizable="false"
+                                              width="400">
+
+<!--                                        <h:panelGrid columns="1" cellpadding="5" style="width: 100%;">
+                                            <p:outputLabel for="forgotEmail" value="Enter your registered email:" />
+                                            <p:inputText id="forgotEmail" value="" required="true" styleClass="form-control" />
+                                            <p:message for="forgotEmail" styleClass="text-danger" />
+
+                                            <p:commandButton value="Submit"
+                                                             action=""
+                                                             styleClass="btn btn-primary w-100 mt-2"
+                                                             oncomplete="PF('forgotPwdDialog').hide();"
+                                                             update="@form"
+                                                             ajax="true" />
+                                        </h:panelGrid>-->
+                                    </p:dialog>
+
+
                                 </h:form>
 
                             </div>
