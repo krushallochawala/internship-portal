@@ -104,7 +104,7 @@ public class studentCDIBean implements Serializable {
                     String originalFileName = profileImage.getFileName();
                     String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    String uploadPath = "E:\\Sem8-Project\\IntershipPortal-adminDashboard\\src\\main\\webapp\\resources\\uploads\\studentProfiles\\";
+                    String uploadPath = "C:\\sem8_project\\Online-Internship-Portal-AdminDashboard\\src\\main\\webapp\\resources\\uploads\\studentProfiles\\";
 
                     File targetFolder = new File(uploadPath);
                     if (!targetFolder.exists()) {
@@ -148,7 +148,7 @@ public class studentCDIBean implements Serializable {
                     String originalFileName = resume.getFileName();
                     String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    String uploadPath = "E:\\Sem8-Project\\IntershipPortal-adminDashboard\\src\\main\\webapp\\resources\\uploads\\studentResume\\";
+                    String uploadPath = "C:\\sem8_project\\Online-Internship-Portal-AdminDashboard\\src\\main\\webapp\\resources\\uploads\\studentResume\\";
 
                     File targetFolder = new File(uploadPath);
                     if (!targetFolder.exists()) {

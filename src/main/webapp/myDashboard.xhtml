@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Dashboard</title>
+        
+    </h:head>
+
+    <h:body>
+        <ui:composition template="./Template/template.xhtml">
+            <ui:define name="top">
+                <ui:include src="./Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container dashboard-wrapper">
+                    <h2 class="text-center mb-5 text-primary">Welcome to Your Dashboard</h2>
+
+                    <div class="row g-4">
+                        <!-- Profile Card -->
+                        <div class="col-md-4 d-flex">
+                            <p:card styleClass="dashboard-card shadow-sm border rounded w-100">
+                                <f:facet name="title">
+                                    <h:outputText value="#{loginCDIBean.profileEmail}" />
+                                </f:facet>
+                                <f:facet name="subtitle">
+                                    Student / Applicant
+                                </f:facet>
+
+                                <div class="dashboard-card-content">
+                                    <div class="text-center mb-3">
+                                        <h:graphicImage library="assets" name="images/user-avatar.png"
+                                                        styleClass="dashboard-avatar" />
+                                    </div>
+                                    <p class="text-center text-muted">View or update your profile information.</p>
+                                    <p:commandButton value="View Profile" icon="pi pi-user"
+                                                     styleClass="btn btn-primary w-100 mt-2" />
+                                </div>
+                            </p:card>
+                        </div>
+
+                        <!-- Internships Applied Card -->
+                        <div class="col-md-4 d-flex">
+                            <p:card styleClass="dashboard-card shadow-sm border rounded w-100 bg-light">
+                                <f:facet name="title">Internships Applied</f:facet>
+                                <div class="dashboard-card-content">
+                                    <div>
+                                        <h2 class="text-center text-primary mb-1">12</h2>
+                                        <p class="text-center text-muted mb-3">Total internships you've applied to so far.</p>
+                                    </div>
+                                    <p:commandButton value="Browse More" icon="pi pi-search"
+                                                     styleClass="btn btn-outline-primary w-100" />
+                                </div>
+                            </p:card>
+                        </div>
+
+                        <!-- Application Status Card -->
+                        <div class="col-md-4 d-flex">
+                            <p:card styleClass="dashboard-card shadow-sm border rounded w-100">
+                                <f:facet name="title">Application Status</f:facet>
+                                <div class="dashboard-card-content">
+                                    <div>
+                                        <p:progressBar value="60" labelTemplate="{value}%" styleClass="mb-3" />
+                                        <p class="progress-text text-muted">60% of your applications have been reviewed.</p>
+                                        <ul class="application-status-list list-unstyled mt-3">
+                                            <li><i class="pi pi-check-circle text-success me-1"></i> 5 Approved</li>
+                                            <li><i class="pi pi-clock text-warning me-1"></i> 3 Pending</li>
+                                            <li><i class="pi pi-times-circle text-danger me-1"></i> 2 Rejected</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </p:card>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="./Template/footer.xhtml" />
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

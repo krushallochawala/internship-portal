@@ -2,6 +2,14 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <style scoped="">
+            .ui-menu {
+                min-width: 220px !important; /* or width: 220px !important; */
+            }
+        </style>
+
+    </head>
 
     <h:body>
         <!-- 🌐 HEADER -->
@@ -28,19 +36,35 @@
                                 <!-- ✅ LOGIN & SIGNUP -->
                                 <div class="button d-flex gap-2 align-items-center">
                                     <!-- ✅ Show email if logged in -->
-                                    <h:panelGroup rendered="#{loginCDIBean.loggedIn}">
+                                    <h:panelGroup>
                                         <!-- Divider -->
                                         <div
                                             class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">
                                             |</div>
-                                        <h:form>
-                                        <p:menuButton value="#{loginCDIBean.profileEmail}" icon="pi pi-user"
-                                                      styleClass="dropdown-toggle profile-text">
-
-                                            <p:menuitem value="My Profile" icon="pi pi-user" />
-                                            <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
-                                        </p:menuButton>
+                                        <!--                                        <h:form>
+                                                                                <p:menuButton value="#{loginCDIBean.profileEmail}" icon="pi pi-user"
+                                                                                              styleClass="dropdown-toggle profile-text">
+                                        
+                                                                                    <p:menuitem value="My Profile" icon="pi pi-user" />
+                                                                                    <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
+                                                                                </p:menuButton>
+                                                                                </h:form>-->
+                                        <h:form styleClass="position-relative d-inline-block">
+                                            <p:menuButton value="Hi Krushal" icon="pi pi-user"
+                                                          styleClass="text-dark border-0 bg-transparent fw-bold"
+                                                          buttonStyleClass="text-dark fw-bold bg-transparent border-0"
+                                                          style="box-shadow: none;"
+                                                          >
+                                                <p:menuitem value="Dashboard" icon="pi pi-home" outcome="myDashboard" />
+                                                <p:menuitem value="Apply Status" icon="pi pi-check-square" outcome="" />
+                                                <p:menuitem value="Manage Applications" icon="pi pi-briefcase" outcome="" />
+                                                <p:separator />
+                                                <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
+                                            </p:menuButton>
                                         </h:form>
+
+
+
                                     </h:panelGroup>
 
                                     <!-- ✅ Show login/signup if not logged in -->
@@ -49,7 +73,7 @@
                                             <i class="fas fa-lock"></i>Login
                                         </h:link>
 
-                                        <h:form styleClass="d-inline-block">
+                                        <h:form styleClass="d-inline-block ">
                                             <p:menuButton value="Sign Up" icon="pi pi-user"
                                                           styleClass="btn btn-primary dropdown-toggle signup-btn"
                                                           buttonStyleClass="btn btn-primary"
@@ -69,3 +93,4 @@
         </header>
     </h:body>
 </html>
+
