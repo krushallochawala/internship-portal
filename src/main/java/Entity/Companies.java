@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -49,12 +50,6 @@ import java.util.Date;
     @NamedQuery(name = "Companies.findByUpdatedAt", query = "SELECT c FROM Companies c WHERE c.updatedAt = :updatedAt")})
 public class Companies implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 150)
@@ -67,13 +62,13 @@ public class Companies implements Serializable {
     @Column(name = "website")
     private String website;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 50)
     @Column(name = "contact_person")
     private String contactPerson;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 50)
     @Column(name = "email")
     private String email;
@@ -82,6 +77,7 @@ public class Companies implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "password")
     private String password;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -89,7 +85,7 @@ public class Companies implements Serializable {
     private String contact;
     @Basic(optional = false)
     @NotNull
-    @Lob
+    @Lob()
     @Size(min = 1, max = 65535)
     @Column(name = "address")
     private String address;
@@ -103,12 +99,23 @@ public class Companies implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
+    @JsonbTransient
+    private Collection<StudentInternships> studentInternshipsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
+    @JsonbTransient
     private Collection<Internships> internshipsCollection;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Roles roleId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
+    @JsonbTransient
     private Collection<Interview> interviewCollection;
 
     public Companies() {
@@ -138,29 +145,6 @@ public class Companies implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
 
     public String getContactPerson() {
         return contactPerson;
@@ -170,37 +154,6 @@ public class Companies implements Serializable {
         this.contactPerson = contactPerson;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -216,6 +169,15 @@ public class Companies implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @XmlTransient
+    public Collection<StudentInternships> getStudentInternshipsCollection() {
+        return studentInternshipsCollection;
+    }
+
+    public void setStudentInternshipsCollection(Collection<StudentInternships> studentInternshipsCollection) {
+        this.studentInternshipsCollection = studentInternshipsCollection;
     }
 
     @XmlTransient
@@ -268,5 +230,60 @@ public class Companies implements Serializable {
     public String toString() {
         return "Entity.Companies[ id=" + id + " ]";
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

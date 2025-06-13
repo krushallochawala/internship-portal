@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,19 +53,13 @@ import java.util.Date;
     @NamedQuery(name = "Students.findByUpdatedAt", query = "SELECT s FROM Students s WHERE s.updatedAt = :updatedAt")})
 public class Students implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "first_name")
     private String firstName;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 50)
     @Column(name = "middle_name")
     private String middleName;
@@ -78,12 +73,12 @@ public class Students implements Serializable {
     private String profileImage;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 6)
     @Column(name = "gender")
     private String gender;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 50)
     @Column(name = "email")
     private String email;
@@ -92,6 +87,7 @@ public class Students implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "password")
     private String password;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -109,27 +105,47 @@ public class Students implements Serializable {
     @Column(name = "linkedin_url")
     private String linkedinUrl;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
+    private Collection<StudentFeedback> studentFeedbackCollection;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
+    private Collection<StudentInternships> studentInternshipsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
     private Collection<Education> educationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
+    private Collection<Payments> paymentsCollection;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Roles roleId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
     private Collection<StudentSkill> studentSkillCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
     private Collection<Bookmarks> bookmarksCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
     private Collection<WorkExperience> workExperienceCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
+    @JsonbTransient
     private Collection<Applications> applicationsCollection;
 
     public Students() {
@@ -193,45 +209,6 @@ public class Students implements Serializable {
         this.profileImage = profileImage;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getResume() {
-        return resume;
-    }
-
-    public void setResume(String resume) {
-        this.resume = resume;
-    }
 
     public String getPortfolioUrl() {
         return portfolioUrl;
@@ -266,12 +243,30 @@ public class Students implements Serializable {
     }
 
     @XmlTransient
+    public Collection<StudentInternships> getStudentInternshipsCollection() {
+        return studentInternshipsCollection;
+    }
+
+    public void setStudentInternshipsCollection(Collection<StudentInternships> studentInternshipsCollection) {
+        this.studentInternshipsCollection = studentInternshipsCollection;
+    }
+
+    @XmlTransient
     public Collection<Education> getEducationCollection() {
         return educationCollection;
     }
 
     public void setEducationCollection(Collection<Education> educationCollection) {
         this.educationCollection = educationCollection;
+    }
+
+    @XmlTransient
+    public Collection<Payments> getPaymentsCollection() {
+        return paymentsCollection;
+    }
+
+    public void setPaymentsCollection(Collection<Payments> paymentsCollection) {
+        this.paymentsCollection = paymentsCollection;
     }
 
     public Roles getRoleId() {
@@ -341,6 +336,55 @@ public class Students implements Serializable {
     @Override
     public String toString() {
         return "Entity.Students[ id=" + id + " ]";
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
+    @XmlTransient
+    public Collection<StudentFeedback> getStudentFeedbackCollection() {
+        return studentFeedbackCollection;
+    }
+
+    public void setStudentFeedbackCollection(Collection<StudentFeedback> studentFeedbackCollection) {
+        this.studentFeedbackCollection = studentFeedbackCollection;
     }
     
 }

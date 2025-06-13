@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,7 +39,8 @@ import java.util.Date;
     @NamedQuery(name = "Applications.findAll", query = "SELECT a FROM Applications a"),
     @NamedQuery(name = "Applications.findById", query = "SELECT a FROM Applications a WHERE a.id = :id"),
     @NamedQuery(name = "Applications.findByStatus", query = "SELECT a FROM Applications a WHERE a.status = :status"),
-    @NamedQuery(name = "Applications.findByApplicationDate", query = "SELECT a FROM Applications a WHERE a.applicationDate = :applicationDate")})
+    @NamedQuery(name = "Applications.findByApplicationDate", query = "SELECT a FROM Applications a WHERE a.applicationDate = :applicationDate"),
+    @NamedQuery(name = "Applications.findByIsPaymentDone", query = "SELECT a FROM Applications a WHERE a.isPaymentDone = :isPaymentDone")})
 public class Applications implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +51,7 @@ public class Applications implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 11)
     @Column(name = "status")
     private String status;
     @Basic(optional = false)
@@ -57,9 +59,15 @@ public class Applications implements Serializable {
     @Column(name = "application_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date applicationDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "is_payment_done")
+    private boolean isPaymentDone;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "applicationId")
-    private Collection<StudentFeedback> studentFeedbackCollection;
+    @JsonbTransient
+    private Collection<Payments> paymentsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "applicationId")
+    @JsonbTransient
     private Collection<Interview> interviewCollection;
     @JoinColumn(name = "internship_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -75,10 +83,11 @@ public class Applications implements Serializable {
         this.id = id;
     }
 
-    public Applications(Integer id, String status, Date applicationDate) {
+    public Applications(Integer id, String status, Date applicationDate, boolean isPaymentDone) {
         this.id = id;
         this.status = status;
         this.applicationDate = applicationDate;
+        this.isPaymentDone = isPaymentDone;
     }
 
     public Integer getId() {
@@ -105,13 +114,21 @@ public class Applications implements Serializable {
         this.applicationDate = applicationDate;
     }
 
-    @XmlTransient
-    public Collection<StudentFeedback> getStudentFeedbackCollection() {
-        return studentFeedbackCollection;
+    public boolean getIsPaymentDone() {
+        return isPaymentDone;
     }
 
-    public void setStudentFeedbackCollection(Collection<StudentFeedback> studentFeedbackCollection) {
-        this.studentFeedbackCollection = studentFeedbackCollection;
+    public void setIsPaymentDone(boolean isPaymentDone) {
+        this.isPaymentDone = isPaymentDone;
+    }
+
+    @XmlTransient
+    public Collection<Payments> getPaymentsCollection() {
+        return paymentsCollection;
+    }
+
+    public void setPaymentsCollection(Collection<Payments> paymentsCollection) {
+        this.paymentsCollection = paymentsCollection;
     }
 
     @XmlTransient

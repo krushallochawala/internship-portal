@@ -51,17 +51,6 @@
                                                     styleClass="form-control" requiredMessage="* Password is required" />
                                         <p:message for="password" styleClass="field-message" display="text" />
                                     </div>
-
-                                    <!-- Role Field -->
-                                    <div class="mb-3">
-                                        <p:outputLabel for="role" value="Role" />
-                                        <p:selectOneMenu id="role" value="#{loginCDIBean.loginRequest.role}" styleClass="form-select w-100"
-                                                         required="true" requiredMessage="* Select Role">
-                                            <f:selectItem itemLabel="Select Role" itemValue="" />
-                                            <f:selectItems value="#{loginCDIBean.allRoles}" var="r" itemLabel="#{r.role}" itemValue="#{r.role}" />
-                                        </p:selectOneMenu>
-                                        <p:message for="role" styleClass="field-message" display="text" />
-                                    </div>
  
                                     <div class="text-center mt-3">
                                         <p:commandLink value="Forgot Password?"

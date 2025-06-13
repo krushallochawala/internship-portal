@@ -57,7 +57,7 @@ public class Interview implements Serializable {
     private Date interviewSchedule;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 11)
     @Column(name = "interview_status")
     private String interviewStatus;
     @Lob

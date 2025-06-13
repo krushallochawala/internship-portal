@@ -38,12 +38,6 @@ import java.util.Date;
     @NamedQuery(name = "StudentFeedback.findByCreatedAt", query = "SELECT s FROM StudentFeedback s WHERE s.createdAt = :createdAt")})
 public class StudentFeedback implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "rating")
@@ -57,9 +51,19 @@ public class StudentFeedback implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @JoinColumn(name = "application_id", referencedColumnName = "id")
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Applications applicationId;
+    private Students studentId;
+    @JoinColumn(name = "internship_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Internships internshipId;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
 
     public StudentFeedback() {
     }
@@ -82,21 +86,6 @@ public class StudentFeedback implements Serializable {
         this.id = id;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -104,14 +93,6 @@ public class StudentFeedback implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Applications getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(Applications applicationId) {
-        this.applicationId = applicationId;
     }
 
     @Override
@@ -137,6 +118,38 @@ public class StudentFeedback implements Serializable {
     @Override
     public String toString() {
         return "Entity.StudentFeedback[ id=" + id + " ]";
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Students getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Students studentId) {
+        this.studentId = studentId;
+    }
+
+    public Internships getInternshipId() {
+        return internshipId;
+    }
+
+    public void setInternshipId(Internships internshipId) {
+        this.internshipId = internshipId;
     }
     
 }

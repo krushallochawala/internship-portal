@@ -64,11 +64,11 @@ public class Education implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "start_year")
-    @Temporal(TemporalType.DATE)
-    private Date startYear;
+//    @Temporal(TemporalType.DATE)
+    private Integer startYear;
     @Column(name = "end_year")
-    @Temporal(TemporalType.DATE)
-    private Date endYear;
+//    @Temporal(TemporalType.DATE)
+    private Integer endYear;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "percentage")
     private Double percentage;
@@ -86,7 +86,7 @@ public class Education implements Serializable {
         this.id = id;
     }
 
-    public Education(Integer id, String degree, String instituteName, Date startYear) {
+    public Education(Integer id, String degree, String instituteName, Integer startYear) {
         this.id = id;
         this.degree = degree;
         this.instituteName = instituteName;
@@ -125,19 +125,19 @@ public class Education implements Serializable {
         this.boardName = boardName;
     }
 
-    public Date getStartYear() {
+    public Integer getStartYear() {
         return startYear;
     }
 
-    public void setStartYear(Date startYear) {
+    public void setStartYear(Integer startYear) {
         this.startYear = startYear;
     }
 
-    public Date getEndYear() {
+    public Integer getEndYear() {
         return endYear;
     }
 
-    public void setEndYear(Date endYear) {
+    public void setEndYear(Integer endYear) {
         this.endYear = endYear;
     }
 

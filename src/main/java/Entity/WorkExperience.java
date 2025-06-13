@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -21,6 +22,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -37,7 +39,6 @@ import java.util.Date;
     @NamedQuery(name = "WorkExperience.findByRole", query = "SELECT w FROM WorkExperience w WHERE w.role = :role"),
     @NamedQuery(name = "WorkExperience.findByStartDate", query = "SELECT w FROM WorkExperience w WHERE w.startDate = :startDate"),
     @NamedQuery(name = "WorkExperience.findByEndDate", query = "SELECT w FROM WorkExperience w WHERE w.endDate = :endDate"),
-    @NamedQuery(name = "WorkExperience.findByTechnologies", query = "SELECT w FROM WorkExperience w WHERE w.technologies = :technologies"),
     @NamedQuery(name = "WorkExperience.findByStipendAmount", query = "SELECT w FROM WorkExperience w WHERE w.stipendAmount = :stipendAmount")})
 public class WorkExperience implements Serializable {
 
@@ -67,12 +68,13 @@ public class WorkExperience implements Serializable {
     private Date endDate;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Lob
+    @Size(min = 1, max = 65535)
     @Column(name = "technologies")
     private String technologies;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "stipend_amount")
-    private Double stipendAmount;
+    private BigDecimal stipendAmount;
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Students studentId;
@@ -140,11 +142,11 @@ public class WorkExperience implements Serializable {
         this.technologies = technologies;
     }
 
-    public Double getStipendAmount() {
+    public BigDecimal getStipendAmount() {
         return stipendAmount;
     }
 
-    public void setStipendAmount(Double stipendAmount) {
+    public void setStipendAmount(BigDecimal stipendAmount) {
         this.stipendAmount = stipendAmount;
     }
 

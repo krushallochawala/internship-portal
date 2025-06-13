@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,6 +26,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -51,12 +53,6 @@ import java.util.Date;
     @NamedQuery(name = "Internships.findByCreatedAt", query = "SELECT i FROM Internships i WHERE i.createdAt = :createdAt")})
 public class Internships implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -68,7 +64,7 @@ public class Internships implements Serializable {
     private String description;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 6)
     @Column(name = "internship_type")
     private String internshipType;
     @Basic(optional = false)
@@ -81,26 +77,20 @@ public class Internships implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "location")
     private String location;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "stipend")
-    private Double stipend;
     @Basic(optional = false)
     @NotNull
     @Column(name = "paid")
     private boolean paid;
+    @Column(name = "amount")
+    private BigDecimal amount;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "internship_time")
     private String internshipTime;
-    @Column(name = "total_required_interns")
-    private Integer totalRequiredInterns;
-    @Column(name = "application_deadline")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date applicationDeadline;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 6)
     @Column(name = "status")
     private String status;
     @Basic(optional = false)
@@ -109,8 +99,34 @@ public class Internships implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "internshipId")
+    @JsonbTransient
+    private Collection<StudentFeedback> studentFeedbackCollection;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "stipend")
+    private BigDecimal stipend;
+    @Column(name = "total_required_interns")
+    private Integer totalRequiredInterns;
+    @Column(name = "application_deadline")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date applicationDeadline;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "internshipId")
+    @JsonbTransient
+    private Collection<StudentInternships> studentInternshipsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "internshipId")
+    @JsonbTransient
+    private Collection<Payments> paymentsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "internshipId")
+    @JsonbTransient
     private Collection<InternshipSkills> internshipSkillsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "internshipId")
+    @JsonbTransient
     private Collection<Bookmarks> bookmarksCollection;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -119,6 +135,7 @@ public class Internships implements Serializable {
     @ManyToOne(optional = false)
     private Companies companyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "internshipId")
+    @JsonbTransient
     private Collection<Applications> applicationsCollection;
 
     public Internships() {
@@ -148,21 +165,6 @@ public class Internships implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getInternshipType() {
         return internshipType;
@@ -172,37 +174,15 @@ public class Internships implements Serializable {
         this.internshipType = internshipType;
     }
 
-    public String getDuration() {
-        return duration;
-    }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Double getStipend() {
+    public BigDecimal getStipend() {
         return stipend;
     }
 
-    public void setStipend(Double stipend) {
+    public void setStipend(BigDecimal stipend) {
         this.stipend = stipend;
     }
 
-    public boolean getPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
-    }
 
     public String getInternshipTime() {
         return internshipTime;
@@ -228,13 +208,6 @@ public class Internships implements Serializable {
         this.applicationDeadline = applicationDeadline;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -242,6 +215,24 @@ public class Internships implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @XmlTransient
+    public Collection<StudentInternships> getStudentInternshipsCollection() {
+        return studentInternshipsCollection;
+    }
+
+    public void setStudentInternshipsCollection(Collection<StudentInternships> studentInternshipsCollection) {
+        this.studentInternshipsCollection = studentInternshipsCollection;
+    }
+
+    @XmlTransient
+    public Collection<Payments> getPaymentsCollection() {
+        return paymentsCollection;
+    }
+
+    public void setPaymentsCollection(Collection<Payments> paymentsCollection) {
+        this.paymentsCollection = paymentsCollection;
     }
 
     @XmlTransient
@@ -310,6 +301,71 @@ public class Internships implements Serializable {
     @Override
     public String toString() {
         return "Entity.Internships[ id=" + id + " ]";
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @XmlTransient
+    public Collection<StudentFeedback> getStudentFeedbackCollection() {
+        return studentFeedbackCollection;
+    }
+
+    public void setStudentFeedbackCollection(Collection<StudentFeedback> studentFeedbackCollection) {
+        this.studentFeedbackCollection = studentFeedbackCollection;
     }
     
 }

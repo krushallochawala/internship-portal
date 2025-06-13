@@ -25,19 +25,19 @@ public class loginClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/  internship-portal/resources";
+    private static final String BASE_URI = "http://localhost:55335/internship-portal/resources";
 
     public loginClient() {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("api");
     }
 
-    public Response loginStudent(Object requestEntity) throws ClientErrorException {
-        return webTarget.path("student/login").request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
-    }
-
     public Response logout() throws ClientErrorException {
         return webTarget.path("user/logout").request().post(null, Response.class);
+    }
+
+    public Response loginStudent(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("student/login").request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
     }
 
     public Response loginCompany(Object requestEntity) throws ClientErrorException {
