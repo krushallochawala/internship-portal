@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="jakarta.faces.html">
 
     <body>
 
@@ -79,16 +80,18 @@
                                         <div class="inner">
                                             <div class="row m-n2 button">
                                                 <div class="col-xl-auto col-lg-12 col-sm-auto col-12 p-2">
-                                                    <a href="bookmarked.html" class="d-block btn"><i class="fa fa-heart-o mr-1"></i> Save Job</a>
+                                                    <h:form>
+                                                        <!--                                                        <p:growl id="growl" showDetail="true" life="3000" />-->
+                                                        <p:commandLink action="#{studentCDIBean.saveInternship(internshipCDIBean.internship.id)}" class="d-block btn" ajax="false"><i class="fa fa-heart-o mr-1"></i> Save Internship</p:commandLink>
+                                                    </h:form>
                                                 </div>
                                                 <div class="col-xl-auto col-lg-12 col-sm-auto col-12 p-2">
-                                                    <a href="job-details.html" class="d-block btn btn-alt">Apply Now</a>
+                                                    <p:commandButton class="d-block btn-alt" style="padding:6px 20px;" oncomplete="launchPayment()" value="Apply Now"></p:commandButton>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Sidebar (Apply Buttons) End -->
-                                    <!-- Sidebar (Job Overview) Start -->
                                     <div class="sidebar-widget">
                                         <div class="inner">
                                             <h6 class="title">Internship Overview</h6>
@@ -107,10 +110,92 @@
                                 </div>
                             </div>
                             <!-- Job Sidebar Wrap End -->
-
                         </div>
                     </div>
                 </div>
+
+                <!-- Feedback Form Section -->
+                <h:panelGroup>
+                    <div class="container py-5">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 col-md-10">
+                                <!-- Card with shadow -->
+                                <div class="card shadow-lg p-4 border-0 rounded-3">
+                                    <h3 class="mb-4 text-center">Share Your Feedback</h3>
+
+                                    <h:form id="feedbackForm">
+                                        <!-- Rating -->
+                                        <div class="mb-3">
+                                            <h:outputLabel value="Rating:" for="rating" />
+                                            <p:rating id="rating" stars="5" required="true" />
+                                        </div>
+
+                                        <!-- Comment -->
+                                        <div class="mb-3">
+                                            <h:outputLabel value="Comments:" for="comment" />
+                                            <p:inputTextarea id="comment"
+                                                             rows="5" cols="60" autoResize="true" required="true"
+                                                             placeholder="Write about your internship experience..." />
+                                        </div>
+
+                                        <!-- Submit -->
+                                        <div class="text-center">
+                                            <p:commandButton value="Submit Feedback" 
+                                                             update="feedbackForm msg"
+                                                             icon="pi pi-user-edit" />
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+
+
+                <form id="razorpay-payment-form" action="/payment" method="POST" style="display: none;">
+                    <input type="hidden" name="_token" value="#{csrf.token}" />
+                    <input type="hidden" id="internshipId" name="internshipId" />
+                    <input type="hidden" id="internshipName" name="internshipName" />
+                    <input type="hidden" id="internshipEmail" name="internshipEmail" />
+                    <input type="hidden" id="totalAmount" name="amount" />
+                    <input type="hidden" id="razorpay_payment_id" name="razorpay_payment_id" />
+                </form>
+
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                <script>
+                    function launchPayment() {
+//                        var eventId = document.getElementById("eventRegistrationForm:eventId").value;
+//                        var name = document.getElementById("eventRegistrationForm:participantName").value;
+                        var amount = 50000; // in paise = ₹500
+
+                        var options = {
+                            "key": "rzp_test_kS80NTezFBTFjA",
+                            "amount": amount,
+                            "currency": "INR",
+                            "name": "LgacyLink",
+                            "description": "Event Registration Fee",
+                            "image": "https://your-logo-url.com/logo.png",
+                            "handler": function (response) {
+                                document.getElementById('internshipId').value = 1;
+                                document.getElementById('internshipName').value = "Frontend Developer";
+                                document.getElementById('totalAmount').value = amount;
+                                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                                document.getElementById('razorpay-payment-form').submit();
+                            },
+                            "prefill": {
+                                "name": "sakshi",
+                                "email": "demo@email.com"
+                            },
+                            "theme": {
+                                "color": "#F37254"
+                            }
+                        };
+                        var rzp = new Razorpay(options);
+                        rzp.open();
+                    }
+                </script>
             </ui:define>
 
             <ui:define name="bottom">

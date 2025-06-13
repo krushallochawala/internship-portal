@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,8 +48,10 @@ public class Skills implements Serializable {
     @Column(name = "skill")
     private String skill;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "skillId")
+    @JsonbTransient
     private Collection<StudentSkill> studentSkillCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "skillId")
+    @JsonbTransient
     private Collection<InternshipSkills> internshipSkillsCollection;
 
     public Skills() {

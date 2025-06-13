@@ -4,10 +4,7 @@
  */
 package CDI;
 
-import Client.companyClient;
 import Client.loginClient;
-import Client.roleClient;
-import Client.studentClient;
 import DTO.LoginRequest;
 import Entity.Roles;
 import Utils.JwtUtil;
@@ -31,10 +28,7 @@ import java.util.List;
 public class loginCDIBean implements Serializable {
 
     loginClient loginClient = new loginClient();
-    roleClient roleClient = new roleClient();
-
     LoginRequest loginRequest = new LoginRequest();
-    List<Roles> roles;
 
     String errorMessage;
     String token;
@@ -72,108 +66,54 @@ public class loginCDIBean implements Serializable {
         this.loginRequest = loginRequest;
     }
 
-    public List<Roles> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Roles> roles) {
-        this.roles = roles;
-    }
-
-    public List<Roles> getAllRoles() {
-        return roleClient.getAllRoles(new GenericType<List<Roles>>() {
-        });
-    }
-
     public String login() {
-        if ("Student".equals(loginRequest.getRole())) {
-            try {
-                Response res = loginClient.loginStudent(loginRequest);
-                if (res.getStatus() == 200) {
-                    String json = res.readEntity(String.class);
-                    String token = json.replace("{\"token\": \"", "").replace("\"}", "");
-                    this.token = token;
+        try {
+            Response res = loginClient.loginStudent(loginRequest);
+            if (res.getStatus() == 200) {
+                String json = res.readEntity(String.class);
+                String token = json.replace("{\"token\": \"", "").replace("\"}", "");
+                this.token = token;
 
-                    // Decode token in JSF app
-                    Claims claims = JwtUtil.validateToken(token);
-                    String email = claims.getSubject();
-                    int studentId = claims.get("userId", Integer.class);
-                    this.profileEmail = email;
-                   
-                    // Store in JSF session
-                    HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                            .getExternalContext().getSession(true);
-                    session.setAttribute("studentEmail", email);
-                    session.setAttribute("studentId", studentId);
+                // Decode token in JSF app
+                Claims claims = JwtUtil.validateToken(token);
+                String email = claims.getSubject();
+                int studentId = claims.get("userId", Integer.class);
+                this.profileEmail = email;
 
-                    // Store token via JavaScript
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("authToken", token);
-                    FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Login Successfully"));
+                // Store in JSF session
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                        .getExternalContext().getSession(true);
+                session.setAttribute("studentEmail", email);
+                session.setAttribute("studentId", studentId);
 
-                    return "index.xhtml";
-                } else {
-                    this.errorMessage = "Invalid email or password.";
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));
-                    return null;
-                }
-            } catch (Exception e) {
-                this.errorMessage = "Login failed. Please try again.";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed. Please try again.", null));
-                System.out.println("=========Login Failed==========" + e.getMessage());
+                // Store token via JavaScript
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("authToken", token);
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Login Successfully"));
+
+                return "index.xhtml";
+            } else {
+                this.errorMessage = "Invalid email or password.";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));
                 return null;
             }
-
-        } else if ("Company".equals(loginRequest.getRole())) {
-            try {
-                Response res = loginClient.loginCompany(loginRequest);
-                if (res.getStatus() == 200) {
-                    String json = res.readEntity(String.class);
-                    String token = json.replace("{\"token\": \"", "").replace("\"}", "");
-                    this.token = token;
-
-                    // Decode token in JSF app
-                    Claims claims = JwtUtil.validateToken(token);
-                    String email = claims.getSubject();
-                    int companyId = claims.get("userId", Integer.class);
-                    this.profileEmail = email;
-                  
-
-                    // Store in JSF session
-                    HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                            .getExternalContext().getSession(true);
-                    session.setAttribute("companyEmail", email);
-                    session.setAttribute("companyId", companyId);
-                    
-                    // Store token via JavaScript
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("authToken", token);
-                    FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Login Successfully"));
-
-                    return "index.xhtml";
-                } else {
-                    this.errorMessage = "Invalid email or password.";
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));
-                    return null;
-                }
-            } catch (Exception e) {
-                this.errorMessage = "Login failed. Please try again.";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed. Please try again.", null));
-                return null;
-            }
+        } catch (Exception e) {
+            this.errorMessage = "Login failed. Please try again.";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed. Please try again.", null));
+            System.out.println("=========Login Failed==========" + e.getMessage());
+            return null;
         }
-        return "index.xhtml";
     }
-    
+
     public boolean isLoggedIn() {
         return profileEmail != null && !profileEmail.isEmpty();
     }
-    
-    public String logout(){
-        try{
+
+    public String logout() {
+        try {
             Response res = loginClient.logout();
             int status = res.getStatus();
-            
+
             if (status == 200) {
                 FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
                 System.out.println("Logged Out.");
@@ -182,7 +122,7 @@ public class loginCDIBean implements Serializable {
             } else {
                 return null;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -36,12 +37,6 @@ import java.util.Collection;
     @NamedQuery(name = "Categories.findByCategory", query = "SELECT c FROM Categories c WHERE c.category = :category")})
 public class Categories implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -53,7 +48,15 @@ public class Categories implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "description")
     private String description;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    @JsonbTransient
     private Collection<Internships> internshipsCollection;
 
     public Categories() {
@@ -77,21 +80,6 @@ public class Categories implements Serializable {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @XmlTransient
     public Collection<Internships> getInternshipsCollection() {
@@ -125,6 +113,22 @@ public class Categories implements Serializable {
     @Override
     public String toString() {
         return "Entity.Categories[ id=" + id + " ]";
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

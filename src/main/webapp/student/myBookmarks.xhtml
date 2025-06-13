@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="primefaces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+    <body>
+
+        <ui:composition template="./../Template/template.xhtml">
+
+            <ui:define name="top">
+                <ui:include src="../Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container dashboard-wrapper apply-status">
+                    <h4 class="text-center mb-5 header">Saved Internships</h4>
+
+                    <div class="row g-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h:form id="applicationForm">
+                                    <p:dataTable value="#{studentCDIBean.myBookMarks}" var="bm"
+                                                 id="bookMarksTable"
+                                                 styleClass="table table-striped table-bordered table-hover"
+                                                 paginator="true" paginatorPosition="bottom" rows="5"
+                                                 filterEvent="keyup" filterDelay="300" widgetVar="bookMarksTableWidget">
+
+                                        <f:facet name="header">
+                                            <div style="display: flex; justify-content: flex-end;">
+                                                <span style="position: relative; width: 250px;">
+                                                    <p:inputText id="globalFilter" onkeyup="PF('bookMarksTableWidget').filter()" placeholder="Search" style="width: 100%;" />
+                                                    <i class="fas fa-search" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                                                </span>
+                                            </div>
+                                        </f:facet>
+
+                                        <p:column headerText="Internship" filterBy="#{bm.internshipId.title}" filterMatchMode="contains">
+                                            <h:outputText value="#{bm.internshipId.title}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Category" filterBy="#{bm.internshipId.categoryId.category}" filterMatchMode="contains">
+                                            <h:outputText value="#{bm.internshipId.categoryId.category}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Company" filterBy="#{bm.internshipId.companyId.name}" filterMatchMode="contains">
+                                            <h:outputText value="#{bm.internshipId.companyId.name}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Actions" style="text-align: center" exportable="false">
+                                        <h:panelGroup>
+                                            <h:commandLink action="#{studentCDIBean.delBookMark(bm.id)}" title="Delete"
+                                                           styleClass="btn btn-sm btn-outline-danger mx-1"
+                                                           onclick="return confirm('Are you sure you want to remove this internship?');">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </h:commandLink>
+                                        </h:panelGroup>
+                                    </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="../Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

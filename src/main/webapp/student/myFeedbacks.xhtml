@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces"
+      xmlns:h="jakarta.faces.html">
+
+    <body>
+
+        <ui:composition template="./../Template/template.xhtml">
+
+            <ui:define name="top">
+                <ui:include src="../Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container dashboard-wrapper apply-status">
+                    <h4 class="text-center mb-5 header">My Feedbacks</h4>
+
+                    <div class="row g-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h:form id="feedbackForm">
+                                    <p:growl id="growl" showDetail="true" life="3000" />
+                                    <p:dataTable value="#{studentCDIBean.feedbacksByStudent}" var="feed"
+                                                 id="feedBackTable"
+                                                 styleClass="table table-striped table-bordered table-hover"
+                                                 paginator="true" paginatorPosition="bottom" rows="5"
+                                                 filterEvent="keyup" filterDelay="300" widgetVar="feedBackTableWidget">
+
+                                        <f:facet name="header">
+                                            <div style="display: flex; justify-content: flex-end;">
+                                                <span style="position: relative; width: 250px;">
+                                                    <p:inputText id="globalFilter" onkeyup="PF('feedBackTableWidget').filter()" placeholder="Search" style="width: 100%;" />
+                                                    <i class="fas fa-search" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                                                </span>
+                                            </div>
+                                        </f:facet>
+
+                                        <p:column headerText="Internship" filterBy="#{feed.internshipId.title}" filterMatchMode="contains">
+                                            <h:outputText value="#{feed.internshipId.title}" />
+                                        </p:column>
+
+                                        <p:column headerText="Category" filterBy="#{feed.internshipId.categoryId.category}" filterMatchMode="contains">
+                                            <h:outputText value="#{feed.internshipId.categoryId.category}" />
+                                        </p:column>
+
+                                        <p:column headerText="Company" filterBy="#{feed.internshipId.companyId.name}" filterMatchMode="contains">
+                                            <h:outputText value="#{feed.internshipId.companyId.name}" />
+                                        </p:column>
+
+                                        <p:column headerText="Rating" filterBy="#{feed.rating}" filterMatchMode="contains">
+                                            <h:outputText value="#{feed.rating}" />
+                                        </p:column>
+
+                                        <p:column headerText="Comments" filterBy="#{feed.comments}" filterMatchMode="contains">
+                                            <h:outputText value="#{feed.comments}" />
+                                        </p:column>
+
+                                        <p:column headerText="Date" filterBy="#{feed.createdAt}" filterMatchMode="contains">
+                                            <h:outputText value="#{feed.createdAt}">
+                                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Actions" style="text-align: center">
+                                            <h:panelGroup>
+                                                <h:commandLink title="Edit" styleClass="btn btn-sm btn-outline-success mx-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </h:commandLink>
+
+                                                <h:commandLink action="#{studentCDIBean.deleteFeedback(feed.id)}"
+                                                               title="Delete"
+                                                               styleClass="btn btn-sm btn-outline-danger mx-1"
+                                                               onclick="return confirm('Are you sure you want to delete this feedback?');">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </h:commandLink>
+                                            </h:panelGroup>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="../Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

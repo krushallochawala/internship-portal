@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,20 +36,23 @@ import java.util.Collection;
     @NamedQuery(name = "Roles.findByRole", query = "SELECT r FROM Roles r WHERE r.role = :role")})
 public class Roles implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "role")
+    private String role;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "role")
-    private String role;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roleId")
+    @JsonbTransient
     private Collection<Students> studentsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roleId")
+    @JsonbTransient
     private Collection<Companies> companiesCollection;
 
     public Roles() {
@@ -71,13 +75,6 @@ public class Roles implements Serializable {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     @XmlTransient
     public Collection<Students> getStudentsCollection() {
@@ -120,6 +117,14 @@ public class Roles implements Serializable {
     @Override
     public String toString() {
         return "Entity.Roles[ id=" + id + " ]";
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
     
 }

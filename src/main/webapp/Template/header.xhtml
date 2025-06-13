@@ -25,46 +25,34 @@
 
                                 <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                                     <ul id="nav" class="navbar-nav ml-auto">
-                                        <li class="nav-item"><a class="active" href="index.xhtml">Home</a></li>
-                                        <li class="nav-item"><a href="faces/aboutUsPage.xhtml">About Us</a></li>
-                                        <li class="nav-item"><a href="faces/categories.xhtml">Browse Categories</a></li>
-                                        <li class="nav-item"><a href="faces/internships.xhtml">Browse Internship</a></li>
-                                        <li class="nav-item"><a href="faces/contactUs.xhtml">Contact</a></li>
+                                        <li class="nav-item"><a class="active" href="#{request.contextPath}/index.xhtml">Home</a></li>
+                                        <li class="nav-item"><a href="#{request.contextPath}/aboutUsPage.xhtml">About Us</a></li>
+                                        <li class="nav-item"><a href="#{request.contextPath}/categories.xhtml">Browse Categories</a></li>
+                                        <li class="nav-item"><a href="#{request.contextPath}/internships.xhtml">Browse Internship</a></li>
+                                        <li class="nav-item"><a href="#{request.contextPath}/contactUs.xhtml">Contact</a></li>
                                     </ul>
                                 </div>
 
                                 <!-- ✅ LOGIN & SIGNUP -->
                                 <div class="button d-flex gap-2 align-items-center">
                                     <!-- ✅ Show email if logged in -->
-                                    <h:panelGroup>
+                                    <h:panelGroup rendered="#{loginCDIBean.loggedIn}">
                                         <!-- Divider -->
                                         <div
                                             class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">
                                             |</div>
-                                        <!--                                        <h:form>
-                                                                                <p:menuButton value="#{loginCDIBean.profileEmail}" icon="pi pi-user"
-                                                                                              styleClass="dropdown-toggle profile-text">
-                                        
-                                                                                    <p:menuitem value="My Profile" icon="pi pi-user" />
-                                                                                    <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
-                                                                                </p:menuButton>
-                                                                                </h:form>-->
-                                        <h:form styleClass="position-relative d-inline-block">
-                                            <p:menuButton value="Hi Krushal" icon="pi pi-user"
-                                                          styleClass="text-dark border-0 bg-transparent fw-bold"
-                                                          buttonStyleClass="text-dark fw-bold bg-transparent border-0"
-                                                          style="box-shadow: none;"
-                                                          >
-                                                <p:menuitem value="Dashboard" icon="pi pi-home" outcome="myDashboard" />
-                                                <p:menuitem value="Apply Status" icon="pi pi-check-square" outcome="" />
-                                                <p:menuitem value="Manage Applications" icon="pi pi-briefcase" outcome="" />
-                                                <p:separator />
+                                            <h:form>
+                                            <p:menuButton value="#{loginCDIBean.profileEmail}" icon="pi pi-user"
+                                                          styleClass="dropdown-toggle profile-text">
+
+                                                <p:menuitem value="My Profile" icon="pi pi-user" action="#{studentCDIBean.goToMyProfile()}"/>
+                                                <p:menuitem value="Dashboard" icon="pi pi-home" action="#{studentCDIBean.goToDashboard()}" ajax="false"/>
+                                                <p:menuitem value="Apply Status" icon="pi pi-check-square" action="#{studentCDIBean.gotoInternshipApply()}" ajax="false" />
+                                                <p:menuitem value="Saved Internship" icon="pi pi-briefcase" action="#{studentCDIBean.goToBookMarks()}" />
+                                                <p:menuitem value="Feedbacks" icon="pi pi-user-edit" action="#{studentCDIBean.gotoMyFeedbacks()}" />
                                                 <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
                                             </p:menuButton>
-                                        </h:form>
-
-
-
+                                            </h:form>
                                     </h:panelGroup>
 
                                     <!-- ✅ Show login/signup if not logged in -->
@@ -85,7 +73,6 @@
                                     </h:panelGroup>
                                 </div>
                             </nav>
-
                         </div>
                     </div>
                 </div>

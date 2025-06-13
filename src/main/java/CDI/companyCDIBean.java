@@ -84,7 +84,7 @@ public class companyCDIBean implements Serializable {
                     String originalFileName = logo.getFileName();
                     String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    String uploadPath = "C:\\sem8_project\\Online-Internship-Portal-AdminDashboard\\src\\main\\webapp\\resources\\uploads\\companyLogo\\";
+                    String uploadPath = ImageUrl.companyLogo;
 
                     File targetFolder = new File(uploadPath);
                     if (!targetFolder.exists()) {

@@ -1,0 +1,440 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="primefaces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+    <body>
+
+        <ui:composition template="./../Template/template.xhtml">
+
+            <ui:define name="top">
+                <ui:include src="../Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container dashboard-wrapper apply-status">
+                    <h4 class="text-center mb-5 header">My Profile</h4>
+
+                    <div class="container-fluid flex-grow-1 container-p-y">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h:form id="profileForm" enctype="multipart/form-data">
+                                    <p:growl id="growl" showDetail="true" life="3000" />
+
+                                    <!-- PERSONAL DETAILS -->
+                                    <p:panel header="Personal Details" id="personalInfo">
+                                        <div class="input-row pt-3">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="First Name"/>
+                                                <br />
+                                                <p:inputText id="fname" value="#{studentCDIBean.student.firstName}" placeholder="Enter FirstName" class="customInput"
+                                                             required="true" requiredMessage="* FirstName is required"/>
+                                                <p:message for="fname" styleClass="field-message" display="text" />
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="Middle Name"/>
+                                                <br />
+                                                <p:inputText id="mname" value="#{studentCDIBean.student.middleName}" placeholder="Enter MiddleName" class="customInput"
+                                                             required="true" requiredMessage="* MiddleName is required"/>
+                                                <p:message for="mname" styleClass="field-message" display="text" />
+                                            </div>
+                                        </div>
+
+                                        <div class="input-row">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Last Name"/>
+                                                <br />
+                                                <p:inputText id="lname" value="#{studentCDIBean.student.lastName}" placeholder="Enter LastName" class="customInput"
+                                                             required="true" requiredMessage="* LastName is required"/>
+                                                <p:message for="lname" styleClass="field-message" display="text" />
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="Contact"/>
+                                                <br />
+                                                <p:inputText id="contact" value="#{studentCDIBean.student.contact}" placeholder="Enter Contact" class="customInput"
+                                                             required="true" requiredMessage="* Contact is required"/>
+                                                <p:message for="contact" styleClass="field-message" display="text" />
+                                            </div>
+                                        </div>
+
+                                        <div class="input-row">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Email"/>
+                                                <br />
+                                                <p:inputText id="email" value="#{studentCDIBean.student.email}" placeholder="Enter Email" class="customInput"
+                                                             required="true" requiredMessage="* Email is required" validatorMessage="* Invalid Email Format">
+                                                    <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
+                                                </p:inputText>
+                                                <p:message for="email" styleClass="field-message" display="text" />
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="Password"/>
+                                                <br />
+                                                <p:inputText id="password" value="#{studentCDIBean.student.password}" placeholder="Enter Password" class="customInput"
+                                                             required="true" requiredMessage="* Password is required"/>
+                                                <p:message for="password" styleClass="field-message" display="text" />
+                                            </div>
+                                        </div>
+
+                                        <div class="input-row">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Profile Image"/>
+                                                <br />
+                                                <p:fileUpload id="profile" value="#{studentCDIBean.profileImage}" mode="simple" auto="false" 
+                                                              accept="image/*"/>
+                                                <br />
+                                                <img src="#{'http://localhost:55335/IntershipPortal-adminDashboard/resources/api/uploads/studentProfiles/'.concat(studentCDIBean.student.profileImage)}"
+                                                     width="100" height="100" style="margin-top:20px; border: 1px solid #ccc; padding: 4px;" />
+                                                <h:outputText value="#{studentCDIBean.profileImageError}" style="color:red;" rendered="#{not empty studentCDIBean.profileImageError}" />
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="Resume"/>
+                                                <br />
+                                                <p:fileUpload id="resume" value="#{studentCDIBean.resume}" mode="simple" auto="false"
+                                                              accept="application/pdf"/>
+                                                <br /><br />
+                                                <!-- View resume -->
+                                                <h:outputLink value="#{'http://localhost:55335/IntershipPortal-adminDashboard/resources/api/uploads/studentResume/'.concat(studentCDIBean.student.resume)}" 
+                                                              target="_blank"
+                                                              rendered="#{not empty studentCDIBean.student.resume}">
+                                                    View Current Resume
+                                                </h:outputLink>
+                                                <h:outputText value="#{studentCDIBean.resumeError}" style="color:red;" rendered="#{not empty studentCDIBean.resumeError}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="input-row">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Portfolio URL"/>
+                                                <br />
+                                                <p:inputText id="purl" value="#{studentCDIBean.student.portfolioUrl}" placeholder="Enter Portfolio URL" class="customInput"/>
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="Linkedin URL"/>
+                                                <br />
+                                                <p:inputText id="lurl" value="#{studentCDIBean.student.linkedinUrl}" placeholder="Enter Linkedin URL" class="customInput" />
+                                            </div>
+                                        </div>
+
+                                        <div class="input-row">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Gender"/>
+                                                <br />
+                                                <p:selectOneRadio id="gender" value="#{studentCDIBean.student.gender}" layout="responsive" columns="3"
+                                                                  required="true" requiredMessage="* Gender is required">
+                                                    <f:selectItems value="#{studentCDIBean.genders}" var="gen" itemLabel="#{gen}" itemValue="#{gen}" />
+                                                </p:selectOneRadio>
+                                                <p:message for="gender" styleClass="field-message" display="text" />
+                                            </div>
+
+                                            <div class="input-row-style">
+
+                                            </div>
+                                        </div>
+
+                                        <div style="padding-bottom: 20px;">
+                                            <p:commandButton styleClass="customBtn" value="Update Personal Info" action="#{studentCDIBean.updateStudent()}" 
+                                                             ajax="false" process="@this personalInfo" update="@form"/>
+                                        </div>
+                                    </p:panel>
+                                </h:form>
+
+                                <br />
+                                <br />
+
+
+                                <!-- EDUCATION DETAILS -->
+                                <p:panel header="Education Details">
+                                    <h:form id="updateEduForm" >
+                                        <p:growl id="growl" showDetail="true" life="3000" globalOnly="true" />
+                                        <ui:repeat value="#{studentCDIBean.myEducationList}" var="edu" varStatus="status">
+                                            <p:fieldset legend="Education # #{status.index + 1}" toggleable="true" collapsed="true">
+                                                <div class="input-row pt-3">
+                                                    <div class="input-first-row-style">
+                                                        <h:outputText value="Institute Name"/>
+                                                        <br />
+                                                        <p:inputText id="institute" value="#{edu.instituteName}" placeholder="Enter Institute Name" class="customInput"
+                                                                     required="true" requiredMessage="* Institute Name is required" />
+                                                        <p:message for="institute" styleClass="field-message" display="text" />
+                                                    </div>
+
+                                                    <div class="input-row-style">
+                                                        <h:outputText value="Degree/Graduation"/>
+                                                        <br />
+                                                        <p:inputText id="degree" value="#{edu.degree}" placeholder="Enter Degree" class="customInput"
+                                                                     required="true" requiredMessage="* Degree is required"/>
+                                                        <p:message for="degree" styleClass="field-message" display="text" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-row">
+                                                    <div class="input-first-row-style">
+                                                        <h:outputText value="Board Name"/>
+                                                        <br />
+                                                        <p:inputText id="board" value="#{edu.boardName}" placeholder="Enter Board Name" class="customInput" />
+                                                        <p:message for="board" styleClass="field-message" display="text" />
+                                                    </div>
+
+                                                    <div class="input-row-style">
+                                                        <h:outputText value="Percentage"/>
+                                                        <br />
+                                                        <p:inputText id="percentage" value="#{edu.percentage}" placeholder="Enter Percentage" class="customInput"
+                                                                     required="true" requiredMessage="* Percentage Year is required"/>
+                                                        <p:message for="percentage" styleClass="field-message" display="text" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-row">
+                                                    <div class="input-first-row-style">
+                                                        <h:outputText value="Start Year"/>
+                                                        <br />
+                                                        <p:inputText id="start_year" value="#{edu.startYear}" placeholder="Enter Start Year" class="customInput"
+                                                                     required="true" requiredMessage="* Start Year is required"/>
+                                                        <p:message for="start_year" styleClass="field-message" display="text" />
+                                                    </div>
+
+                                                    <div class="input-row-style">
+                                                        <h:outputText value="End year"/>
+                                                        <br />
+                                                        <p:inputText id="end_year" value="#{edu.endYear}" placeholder="Enter End Year" class="customInput"/>
+                                                        <p:message for="end_year" styleClass="field-message" display="text" />
+                                                    </div>
+                                                </div>
+
+                                                <h:outputText value="Sepcialization" />
+                                                <br />
+                                                <p:inputTextarea id="specialization" value="#{edu.specialization}" placeholder="Enter Specialization"
+                                                                 class="customInputArea"/>
+                                                <p:message for="specialization" styleClass="field-message" display="text" />
+
+                                                <div style="padding-bottom: 20px;">
+                                                    <p:commandButton styleClass="customBtn" value="Update Education Info" action="#{studentCDIBean.updateEducation(edu)}" ajax="false"/>
+                                                    <p:commandButton styleClass="customBtn mx-2" value="Delete" action="#{studentCDIBean.deleteEducation(edu.id)}" ajax="false"/>
+                                                </div>
+                                            </p:fieldset>
+                                        </ui:repeat>
+                                    </h:form>
+
+                                    <br />
+
+                                    <h:form id="addEduForm">
+                                        <p:fieldset legend="Add New Education" toggleable="true" collapsed="true">
+                                            <div class="input-row pt-3">
+                                                <div class="input-first-row-style">
+                                                    <h:outputText value="Institute Name"/>
+                                                    <br />
+                                                    <p:inputText id="institute" value="#{studentCDIBean.education.instituteName}" placeholder="Enter Institute Name" class="customInput"
+                                                                 required="true" requiredMessage="* Institute Name is required" />
+                                                    <p:message for="institute" styleClass="field-message" display="text" />
+                                                </div>
+
+                                                <div class="input-row-style">
+                                                    <h:outputText value="Degree/Graduation"/>
+                                                    <br />
+                                                    <p:inputText id="degree" value="#{studentCDIBean.education.degree}" placeholder="Enter Degree" class="customInput"
+                                                                 required="true" requiredMessage="* Degree is required"/>
+                                                    <p:message for="degree" styleClass="field-message" display="text" />
+                                                </div>
+                                            </div>
+
+                                            <div class="input-row">
+                                                <div class="input-first-row-style">
+                                                    <h:outputText value="Board Name"/>
+                                                    <br />
+                                                    <p:inputText id="board" value="#{studentCDIBean.education.boardName}" placeholder="Enter Board Name" class="customInput" />
+                                                    <p:message for="board" styleClass="field-message" display="text" />
+                                                </div>
+
+                                                <div class="input-row-style">
+                                                    <h:outputText value="Percentage"/>
+                                                    <br />
+                                                    <p:inputText id="percentage" value="#{studentCDIBean.education.percentage}" placeholder="Enter Percentage" class="customInput"
+                                                                 required="true" requiredMessage="* Percentage Year is required"/>
+                                                    <p:message for="percentage" styleClass="field-message" display="text" />
+                                                </div>
+                                            </div>
+
+                                            <div class="input-row">
+                                                <div class="input-first-row-style">
+                                                    <h:outputText value="Start Year"/>
+                                                    <br />
+                                                    <p:inputText id="start_year" value="#{studentCDIBean.education.startYear}" placeholder="Enter Start Year" class="customInput"
+                                                                 required="true" requiredMessage="* Start Year is required"/>
+                                                    <p:message for="start_year" styleClass="field-message" display="text" />
+                                                </div>
+
+                                                <div class="input-row-style">
+                                                    <h:outputText value="End year"/>
+                                                    <br />
+                                                    <p:inputText id="end_year" value="#{studentCDIBean.education.endYear}" placeholder="Enter End Year" class="customInput"/>
+                                                    <p:message for="end_year" styleClass="field-message" display="text" />
+                                                </div>
+                                            </div>
+
+                                            <h:outputText value="Sepcialization" />
+                                            <br />
+                                            <p:inputTextarea id="specialization" value="#{studentCDIBean.education.specialization}" placeholder="Enter Specialization"
+                                                             class="customInputArea"/>
+                                            <p:message for="specialization" styleClass="field-message" display="text" />
+
+                                            <div style="padding-bottom: 20px;">
+                                                <p:commandButton styleClass="customBtn" value="Add Education Info" action="#{studentCDIBean.addEducation()}" ajax="false"/>
+                                            </div>
+                                        </p:fieldset>
+                                    </h:form>
+                                </p:panel>
+
+                                <br />
+                                <br />
+
+
+                                <!-- EXPERIENCE DETAILS -->
+                                <p:panel header="Experience Details">
+                                    <h:form id="updExpDetail">
+                                    <ui:repeat value="#{studentCDIBean.myExperienceList}" var="exp" varStatus="status">
+                                        <p:fieldset legend="Experience # #{status.index + 1}" toggleable="true" collapsed="true">
+                                            <div class="input-row pt-3">
+                                                <div class="input-first-row-style">
+                                                    <h:outputText value="Company Name"/>
+                                                    <br />
+                                                    <p:inputText id="cname" value="#{exp.companyName}" placeholder="Enter Company Name" class="customInput"
+                                                                 required="true" requiredMessage="* Company Name is required"/>
+                                                    <p:message for="cname" styleClass="field-message" display="text" />
+                                                </div>
+
+                                                <div class="input-row-style">
+                                                    <h:outputText value="Role"/>
+                                                    <br />
+                                                    <p:inputText id="role" value="#{exp.role}" placeholder="Enter Role" class="customInput"
+                                                                 required="true" requiredMessage="* Role Name is required" />
+                                                    <p:message for="role" styleClass="field-message" display="text" />
+                                                </div>
+                                            </div>
+
+                                            <div class="input-row">
+                                                <div class="input-first-row-style">
+                                                    <h:outputText value="Start Date"/>
+                                                    <br />
+                                                    <h:inputText id="sdate" value="#{exp.startDate}" required="true" 
+                                                                 class="customInput" type="date" requiredMessage="* Start date is required">
+                                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                    </h:inputText>
+                                                    <p:message for="sdate" styleClass="field-message" display="text" />
+                                                </div>
+
+                                                <div class="input-row-style">
+                                                    <h:outputText value="End Date"/>
+                                                    <br />
+                                                    <h:inputText id="edate" value="#{exp.endDate}" 
+                                                                 class="customInput" type="date">
+                                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                    </h:inputText>
+                                                    <p:message for="edate" styleClass="field-message" display="text" />
+                                                </div>
+                                            </div>
+
+                                            <h:outputText value="Stipend Amount"/>
+                                            <br />
+                                            <p:inputText id="samount" value="#{exp.stipendAmount}" placeholder="Enter Stipend Amount" class="customInput"/>
+                                            <p:message for="samount" styleClass="field-message" display="text" />
+
+                                            <br />
+                                            <h:outputText value="Technologies" />
+                                            <br />
+                                            <p:inputTextarea id="technologies" value="#{exp.technologies}" placeholder="Enter Technologies"
+                                                             class="customInputArea" required="true" requiredMessage="* Technologies are required"/>
+                                            <p:message for="technologies" styleClass="field-message" display="text" />
+
+                                            <div style="padding-bottom: 20px;">
+                                                <p:commandButton styleClass="customBtn" value="Update Experience Info" action="#{studentCDIBean.updateExperience(exp)}" ajax="false"/>
+                                                <p:commandButton styleClass="customBtn mx-2" value="Delete" action="#{studentCDIBean.deleteExperience(exp.id)}" ajax="false"/>
+                                            </div>
+                                        </p:fieldset>
+                                    </ui:repeat>
+                                    </h:form>
+
+                                    <br />
+
+                                    <h:form id="addExpForm">
+                                    <p:fieldset legend="Add New Experience" toggleable="true" collapsed="true">
+                                        <div class="input-row pt-3">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Company Name"/>
+                                                <br />
+                                                <p:inputText id="cname" value="#{studentCDIBean.exp.companyName}" placeholder="Enter Company Name" class="customInput"
+                                                             required="true" requiredMessage="* Company Name is required"/>
+                                                <p:message for="cname" styleClass="field-message" display="text" />
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="Role"/>
+                                                <br />
+                                                <p:inputText id="role" value="#{studentCDIBean.exp.role}" placeholder="Enter Role" class="customInput"
+                                                             required="true" requiredMessage="* Role Name is required" />
+                                                <p:message for="role" styleClass="field-message" display="text" />
+                                            </div>
+                                        </div>
+
+                                        <div class="input-row">
+                                            <div class="input-first-row-style">
+                                                <h:outputText value="Start Date"/>
+                                                <br />
+                                                <h:inputText id="sdate" value="#{studentCDIBean.exp.startDate}" required="true" 
+                                                             class="customInput" type="date" requiredMessage="* Start date is required">
+                                                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                </h:inputText>
+                                                <p:message for="sdate" styleClass="field-message" display="text" />
+                                            </div>
+
+                                            <div class="input-row-style">
+                                                <h:outputText value="End Date"/>
+                                                <br />
+                                                <h:inputText id="edate" value="#{studentCDIBean.exp.endDate}" 
+                                                             class="customInput" type="date">
+                                                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                </h:inputText>
+                                                <p:message for="edate" styleClass="field-message" display="text" />
+                                            </div>
+                                        </div>
+
+                                        <h:outputText value="Stipend Amount"/>
+                                        <br />
+                                        <p:inputText id="samount" value="#{studentCDIBean.exp.stipendAmount}" placeholder="Enter Stipend Amount" class="customInput"/>
+                                        <p:message for="samount" styleClass="field-message" display="text" />
+
+                                        <br />
+                                        <h:outputText value="Technologies" />
+                                        <br />
+                                        <p:inputTextarea id="technologies" value="#{studentCDIBean.exp.technologies}" placeholder="Enter Technologies"
+                                                         class="customInputArea" required="true" requiredMessage="* Technologies are required"/>
+                                        <p:message for="technologies" styleClass="field-message" display="text" />
+
+                                        <div style="padding-bottom: 20px;">
+                                            <p:commandButton styleClass="customBtn" value="Add Experience Info" action="#{studentCDIBean.addExperience()}" ajax="false"/>
+                                        </div>
+                                    </p:fieldset>
+                                    </h:form>
+                                </p:panel>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="../Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

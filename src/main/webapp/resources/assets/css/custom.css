@@ -584,3 +584,67 @@ job-details .job-details-inner {
     margin-bottom: 0.25rem;
 }
 
+.apply-status .header{
+    color: white;
+    background-color: #2042e3;
+    padding: 10px;
+}
+
+.ui-column-filter {
+    display: none !important;
+}
+
+.input-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-first-row-style{
+    padding-bottom: 15px;
+    flex: 1;
+    margin-right: 20px;
+}
+
+.input-row-style{
+    padding-bottom: 15px;
+    flex: 1;
+}
+
+.field-message {
+    background: none !important;
+    border: none !important;
+}
+
+.field-message span {
+    display: inline;
+    color: red;
+    font-size: 15px;
+}
+
+.customInput,
+.customInput.ui-inputtext{
+    box-shadow: none !important;
+    width: 100% !important;
+}
+
+body .ui-inputfield{
+    width: 100% !important;
+}
+
+.ui-rating .ui-rating-cancel.ui-state-focus{
+    box-shadow: none !important;
+}
+
+.ui-rating .ui-rating-star.ui-state-focus{
+    box-shadow: none !important;
+}
+
+/* Unselected stars (grayish by default) */
+.ui-rating-star a {
+    color: #ccc !important;
+    font-size: 24px; /* Optional: size tweak */
+}
+
+.ui-rating-star-on a {
+    color: #FFD700 !important;  /* Gold */
+}

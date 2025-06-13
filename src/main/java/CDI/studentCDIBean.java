@@ -4,12 +4,29 @@
  */
 package CDI;
 
+import Client.applicationsClient;
+import Client.bookmarkClient;
+import Client.educationClient;
+import Client.experienceClient;
+import Client.feedbackClient;
+import Client.internshipClient;
 import Client.studentClient;
+import Entity.Applications;
+import Entity.Bookmarks;
+import Entity.Education;
+import Entity.Internships;
+import Entity.StudentFeedback;
 import Entity.Students;
+import Entity.WorkExperience;
+import Enum.EnumClass;
+import Enum.EnumClass.Gender;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.resource.spi.work.WorkException;
+import jakarta.ws.rs.core.GenericType;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,7 +45,19 @@ import org.primefaces.model.file.UploadedFile;
 public class studentCDIBean implements Serializable {
 
     studentClient client = new studentClient();
+    applicationsClient appClient = new applicationsClient();
+    bookmarkClient bookmarkClient = new bookmarkClient();
+    internshipClient internshipClient = new internshipClient();
+    educationClient eduClient = new educationClient();
+    experienceClient expClient = new experienceClient();
+    feedbackClient feedbackClient = new feedbackClient();
+
     Students student = new Students();
+    Bookmarks bookmark = new Bookmarks();
+    Education education = new Education();
+    WorkExperience exp = new WorkExperience();
+    StudentFeedback feedback = new StudentFeedback();
+
     UploadedFile profileImage;
     UploadedFile resume;
 
@@ -38,6 +67,11 @@ public class studentCDIBean implements Serializable {
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
     private static final List<String> ALLOWED_IMAGE_TYPES = List.of("image/jpeg", "image/png", "image/jpg");
     private static final List<String> ALLOWED_RESUME_TYPES = List.of("application/pdf");
+
+    long totalApplications;
+    long selectedCount;
+    long rejectedCount;
+    long pendingCount;
 
     public UploadedFile getProfileImage() {
         return profileImage;
@@ -79,6 +113,81 @@ public class studentCDIBean implements Serializable {
         this.student = student;
     }
 
+    public long getTotalApplications() {
+        return totalApplications;
+    }
+
+    public void setTotalApplications(long totalApplications) {
+        this.totalApplications = totalApplications;
+    }
+
+    public long getSelectedCount() {
+        return selectedCount;
+    }
+
+    public void setSelectedCount(long selectedCount) {
+        this.selectedCount = selectedCount;
+    }
+
+    public long getRejectedCount() {
+        return rejectedCount;
+    }
+
+    public void setRejectedCount(long rejectedCount) {
+        this.rejectedCount = rejectedCount;
+    }
+
+    public long getPendingCount() {
+        return pendingCount;
+    }
+
+    public void setPendingCount(long pendingCount) {
+        this.pendingCount = pendingCount;
+    }
+
+    public Education getEducation() {
+        return education;
+    }
+
+    public void setEducation(Education education) {
+        this.education = education;
+    }
+
+    public WorkExperience getExp() {
+        return exp;
+    }
+
+    public void setExp(WorkExperience exp) {
+        this.exp = exp;
+    }
+
+    public StudentFeedback getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(StudentFeedback feedback) {
+        this.feedback = feedback;
+    }
+
+    @PostConstruct
+    public void init() {
+        try {
+            Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                    .getExternalContext().getSessionMap().get("studentId");
+            totalApplications = appClient.getApplicationCountByStudent(new GenericType<Long>() {
+            }, String.valueOf(studentId));
+            selectedCount = appClient.getSelectedCountByStudent(new GenericType<Long>() {
+            }, String.valueOf(studentId));
+            rejectedCount = appClient.getRejectedCountByStudent(new GenericType<Long>() {
+            }, String.valueOf(studentId));
+            pendingCount = appClient.getPendingCountByStudent(new GenericType<Long>() {
+            }, String.valueOf(studentId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error : " + e.getMessage());
+        }
+    }
+
     public String addStudent() {
         profileImageError = null;
         resumeError = null;
@@ -104,7 +213,7 @@ public class studentCDIBean implements Serializable {
                     String originalFileName = profileImage.getFileName();
                     String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    String uploadPath = "C:\\sem8_project\\Online-Internship-Portal-AdminDashboard\\src\\main\\webapp\\resources\\uploads\\studentProfiles\\";
+                    String uploadPath = ImageUrl.studentProfile;
 
                     File targetFolder = new File(uploadPath);
                     if (!targetFolder.exists()) {
@@ -148,7 +257,7 @@ public class studentCDIBean implements Serializable {
                     String originalFileName = resume.getFileName();
                     String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    String uploadPath = "C:\\sem8_project\\Online-Internship-Portal-AdminDashboard\\src\\main\\webapp\\resources\\uploads\\studentResume\\";
+                    String uploadPath = ImageUrl.studentResume;
 
                     File targetFolder = new File(uploadPath);
                     if (!targetFolder.exists()) {
@@ -192,4 +301,282 @@ public class studentCDIBean implements Serializable {
             return null;
         }
     }
+
+    public String goToDashboard() {
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        student = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        return "/student/myDashboard.xhtml";
+    }
+
+    public int getReviewedPercentage() {
+        int total = (int) (selectedCount + rejectedCount + pendingCount);
+        int reviewed = (int) (selectedCount + rejectedCount);
+        return total > 0 ? (reviewed * 100 / total) : 0;
+    }
+
+    public String gotoInternshipApply() {
+        return "/student/applyStatus.xhtml";
+    }
+    
+    public List<Applications> getMyApplications(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        return appClient.getApplicationByStudent(new GenericType<List<Applications>>() {
+        }, String.valueOf(studentId));
+    }
+
+    public String saveInternship(int id) {
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        if (studentId == null) {
+            return "login.xhtml";
+        } else {
+            Students stud = client.getStudentbyId(new GenericType<Students>() {
+            }, String.valueOf(studentId));
+            Internships internship = internshipClient.getInternshipById(new GenericType<Internships>() {
+            }, String.valueOf(id));
+            bookmark.setStudentId(stud);
+            bookmark.setInternshipId(internship);
+            bookmarkClient.addBookMark(bookmark);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Internship Saved."));
+            return null;
+        }
+    }
+    
+    public String goToBookMarks(){
+        return "/student/myBookmarks.xhtml";
+    }
+    
+    public List<Bookmarks> getMyBookMarks(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        return bookmarkClient.getBookMarksByStudent(new GenericType<List<Bookmarks>>(){}, String.valueOf(studentId));
+    }
+    
+    public String delBookMark(int id){
+        bookmarkClient.deleteBookMark(String.valueOf(id));
+        return null;
+    }
+    
+    public String goToMyProfile(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        student = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        return "/student/myProfile.xhtml";
+    }
+     
+    public Gender[] getGenders() {
+        return Gender.values();
+    }
+    
+    public List<Education> getMyEducationList(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        return eduClient.getEducationByStudent(new GenericType<List<Education>>(){}, String.valueOf(studentId));
+    }
+    
+    public List<WorkExperience> getMyExperienceList(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        return expClient.getExperienceByStudent(new GenericType<List<WorkExperience>>(){}, String.valueOf(studentId));
+    }
+    
+    public String updateStudent() {
+        profileImageError = null;
+        resumeError = null;
+
+        boolean profileHasError = false;
+        boolean resumeHasError = false;
+
+        // Path to the folder where profiles and resume are stored
+        String profilePath = ImageUrl.studentProfile;
+        String resumePath = ImageUrl.studentResume;
+        // Profile image validation
+        if (profileImage != null && profileImage.getFileName() != null) {
+            String imageContentType = profileImage.getContentType();
+            long imageSize = profileImage.getSize();
+
+            if (!ALLOWED_IMAGE_TYPES.contains(imageContentType)) {
+                profileImageError = "* Only JPEG, JPG, or PNG images are allowed.";
+                profileHasError = true;
+            }
+
+            if (imageSize > MAX_FILE_SIZE) {
+                profileImageError = "* Profile image file size must be less than 5MB.";
+                profileHasError = true;
+            }
+
+            if (!profileHasError) {
+                try {
+                    // Remove old profile file if it exists
+                    String oldProfileFileName = student.getProfileImage(); // This is the currently stored logo name
+                    if (oldProfileFileName != null && !oldProfileFileName.isEmpty()) {
+                        File oldFile = new File(profilePath + oldProfileFileName);
+                        if (oldFile.exists()) {
+                            boolean deleted = oldFile.delete();
+                            System.out.println("Old file deleted: " + deleted);
+                        }
+                    }
+
+                    //Save new file
+                    String originalFileName = profileImage.getFileName();
+                    String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                    String uniqueFileName = UUID.randomUUID().toString() + extension;
+
+                    File targetFolder = new File(profilePath);
+                    if (!targetFolder.exists()) {
+                        targetFolder.mkdirs();
+                    }
+
+                    Files.copy(profileImage.getInputStream(), new File(profilePath, uniqueFileName).toPath(),
+                            StandardCopyOption.REPLACE_EXISTING);
+
+                    student.setProfileImage(uniqueFileName);
+                    System.out.println("Uploaded to: " + profilePath + uniqueFileName);
+
+                } catch (IOException e) {
+                    profileImageError = "Error uploading profile image.";
+                    profileHasError = true;
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Resume validation
+        if (resume != null && resume.getFileName() != null) {
+            String resumeContentType = resume.getContentType();
+            long resumeSize = resume.getSize();
+
+            if (!ALLOWED_RESUME_TYPES.contains(resumeContentType)) {
+                resumeError = "* Only PDF files are allowed for resumes.";
+                resumeHasError = true;
+            }
+
+            if (resumeSize > MAX_FILE_SIZE) {
+                resumeError = "* Resume file size must be less than 5MB.";
+                resumeHasError = true;
+            }
+
+            if (!resumeHasError) {
+                try {
+                    // Remove old resume file if it exists
+                    String oldResumeFileName = student.getResume(); // This is the currently stored logo name
+                    if (oldResumeFileName != null && !oldResumeFileName.isEmpty()) {
+                        File oldFile = new File(resumePath + oldResumeFileName);
+                        if (oldFile.exists()) {
+                            boolean deleted = oldFile.delete();
+                            System.out.println("Old file deleted: " + deleted);
+                        }
+                    }
+
+                    //Save new file
+                    String originalFileName = resume.getFileName();
+                    String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                    String uniqueFileName = UUID.randomUUID().toString() + extension;
+
+                    File targetFolder = new File(resumePath);
+                    if (!targetFolder.exists()) {
+                        targetFolder.mkdirs();
+                    }
+
+                    Files.copy(resume.getInputStream(), new File(resumePath, uniqueFileName).toPath(),
+                            StandardCopyOption.REPLACE_EXISTING);
+
+                    student.setResume(uniqueFileName);
+                    System.out.println("Uploaded to: " + resumePath + uniqueFileName);
+
+                } catch (IOException e) {
+                    resumeError = "Error uploading resume.";
+                    resumeHasError = true;
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (profileHasError || resumeHasError) {
+            return null;
+        }
+        client.updateStudent(student);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Student updated successfully"));
+        return null;
+    }
+    
+    public String updateEducation(Education edu){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>(){},String.valueOf(studentId));
+        edu.setStudentId(stud);
+        eduClient.updateEducation(edu);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Education Details updated successfully"));
+        return null;
+    }
+    
+    public String addEducation(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>(){},String.valueOf(studentId));
+        education.setStudentId(stud);
+        eduClient.addEducation(education);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Education Details added successfully"));
+        
+        education = new Education();
+        return null;
+    }
+    
+    public String deleteEducation(int id){
+        eduClient.deleteEducation(String.valueOf(id));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Education Details deleted successfully"));
+        return null;
+    }
+    
+    public String updateExperience(WorkExperience exp) {
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        exp.setStudentId(stud);
+        expClient.updateExperience(exp);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience updated successfully"));
+        return null;
+    }
+    
+    public String addExperience() {
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        exp.setStudentId(stud);
+        expClient.addExperience(exp);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience added successfully"));
+        
+        exp = new WorkExperience();
+        return null;
+    }
+    
+    public String deleteExperience(int id) {
+        expClient.deleteExperience(String.valueOf(id));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience deleted successfully"));
+        return null;
+    }
+    
+    public String gotoMyFeedbacks(){
+        return "/student/myFeedbacks.xhtml";
+    }
+    
+    public List<StudentFeedback> getFeedbacksByStudent(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        return feedbackClient.getFeedbackByStudent(new GenericType<List<StudentFeedback>>(){}, String.valueOf(studentId));
+    }
+    
+    public String deleteFeedback(int id){
+        feedbackClient.deleteFeedback(String.valueOf(id));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience deleted successfully"));
+        return null;
+    }
 }
+    
