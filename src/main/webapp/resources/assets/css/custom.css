@@ -515,6 +515,12 @@ job-details .job-details-inner {
 
 .internshipContent{
     font-size: 15px;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;       /* Show only 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 3.5em;   
 }
 
 .login-signup-content{

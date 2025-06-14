@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="primefaces"
+      xmlns:f="jakarta.faces.core"
+      xmlns:h="jakarta.faces.html">
+
+    <body>
+
+        <ui:composition template="./../Template/template.xhtml">
+
+            <ui:define name="top">
+                <ui:include src="../Template/header.xhtml"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="container dashboard-wrapper apply-status">
+                    <h4 class="text-center mb-5 header">Edit Your Feedback</h4>
+
+                    <div class="row g-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h:form id="feedbackForm">
+                                    
+                                    <!-- Internship -->
+                                    <div class="mb-3">
+                                        <h:outputLabel value="Internship" for="internship" />
+                                        <p:inputText id="internship" value="#{studentCDIBean.feedback.internshipId.title}" required="true" readonly="true"/>
+                                    </div>
+
+                                    <!-- Rating -->
+                                    <div class="mb-3">
+                                        <h:outputLabel value="Rating:" for="rating" />
+                                        <p:rating id="rating" stars="5" value="#{studentCDIBean.feedback.rating}" required="true" />
+                                    </div>
+
+                                    <!-- Comment -->
+                                    <div class="mb-3">
+                                        <h:outputLabel value="Comments:" for="comment" />
+                                        <p:inputTextarea id="comment"
+                                                         rows="5" cols="60" autoResize="true" required="true"
+                                                         value="#{studentCDIBean.feedback.comments}"
+                                                         placeholder="Write about your internship experience..." />
+                                    </div>
+
+                                    <!-- Submit -->
+                                    <div class="text-center">
+                                        <p:commandButton value="Edit Feedback" 
+                                                         update="feedbackForm msg"
+                                                         icon="pi pi-user-edit" 
+                                                         action="#{studentCDIBean.editFeedback()}">
+                                            <f:setPropertyActionListener value="#{internshipCDIBean.internship.id}" target="#{studentCDIBean.internshipId}" />
+                                        </p:commandButton>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="bottom">
+                <ui:include src="../Template/footer.xhtml" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
 
     <body>
 
@@ -81,12 +82,18 @@
                                             <div class="row m-n2 button">
                                                 <div class="col-xl-auto col-lg-12 col-sm-auto col-12 p-2">
                                                     <h:form>
-                                                        <!--                                                        <p:growl id="growl" showDetail="true" life="3000" />-->
                                                         <p:commandLink action="#{studentCDIBean.saveInternship(internshipCDIBean.internship.id)}" class="d-block btn" ajax="false"><i class="fa fa-heart-o mr-1"></i> Save Internship</p:commandLink>
                                                     </h:form>
+
+                                                    <h:form id="applyForm" style="display:none;">
+                                                        <p:commandButton id="applyBtn"
+                                                                         action="#{studentCDIBean.applyInternship(internshipCDIBean.internship.id)}"
+                                                                         ajax="false" />
+                                                    </h:form>
+
                                                 </div>
                                                 <div class="col-xl-auto col-lg-12 col-sm-auto col-12 p-2">
-                                                    <p:commandButton class="d-block btn-alt" style="padding:6px 20px;" oncomplete="launchPayment()" value="Apply Now"></p:commandButton>
+                                                    <p:commandButton class="d-block btn-alt" style="padding:6px 20px;" oncomplete="checkLoginAndLaunchPayment()" value="Apply Now"></p:commandButton>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,6 +109,10 @@
                                                 <li><strong>Internship Location:</strong> #{internshipCDIBean.internship.location}</li>
                                                 <li><strong>Stipend:</strong> #{empty internshipCDIBean.internship.stipend ? "N/A" : internshipCDIBean.internship.stipend}</li>
                                                 <li><strong>Paid:</strong>#{internshipCDIBean.internship.paid}</li>
+                                                <h:panelGroup rendered="#{internshipCDIBean.internship.paid}">
+                                                    <li><strong>Amount:</strong> ₹#{internshipCDIBean.internship.amount}</li>
+                                                </h:panelGroup>
+
                                                 <li><strong>Application Deadline:</strong> #{internshipCDIBean.internship.applicationDeadline}</li>
                                             </ul>
                                         </div>
@@ -124,10 +135,11 @@
                                     <h3 class="mb-4 text-center">Share Your Feedback</h3>
 
                                     <h:form id="feedbackForm">
+
                                         <!-- Rating -->
                                         <div class="mb-3">
                                             <h:outputLabel value="Rating:" for="rating" />
-                                            <p:rating id="rating" stars="5" required="true" />
+                                            <p:rating id="rating" stars="5" value="#{studentCDIBean.feedback.rating}" required="true" />
                                         </div>
 
                                         <!-- Comment -->
@@ -135,6 +147,7 @@
                                             <h:outputLabel value="Comments:" for="comment" />
                                             <p:inputTextarea id="comment"
                                                              rows="5" cols="60" autoResize="true" required="true"
+                                                             value="#{studentCDIBean.feedback.comments}"
                                                              placeholder="Write about your internship experience..." />
                                         </div>
 
@@ -142,7 +155,10 @@
                                         <div class="text-center">
                                             <p:commandButton value="Submit Feedback" 
                                                              update="feedbackForm msg"
-                                                             icon="pi pi-user-edit" />
+                                                             icon="pi pi-user-edit" 
+                                                             action="#{studentCDIBean.addFeedback()}">
+                                                <f:setPropertyActionListener value="#{internshipCDIBean.internship.id}" target="#{studentCDIBean.internshipId}" />
+                                            </p:commandButton>
                                         </div>
                                     </h:form>
                                 </div>
@@ -153,36 +169,38 @@
 
 
 
-                <form id="razorpay-payment-form" action="/payment" method="POST" style="display: none;">
+                <form id="razorpayForm" action="/student/applyStatus" method="POST" style="display: none;">
                     <input type="hidden" name="_token" value="#{csrf.token}" />
-                    <input type="hidden" id="internshipId" name="internshipId" />
-                    <input type="hidden" id="internshipName" name="internshipName" />
-                    <input type="hidden" id="internshipEmail" name="internshipEmail" />
-                    <input type="hidden" id="totalAmount" name="amount" />
-                    <input type="hidden" id="razorpay_payment_id" name="razorpay_payment_id" />
+                    <input type="hidden" id="internshipId" value="#{studentCDIBean.internshipId}" name="internshipId" />
+                    <input type="hidden" id="totalAmount" value="#{internshipCDIBean.internship.amount}" name="amount" />
+                    <input type="hidden" id="razorpay_payment_id" value="#{studentCDIBean.payment.transactionId}" name="razorpay_payment_id" />
+                    
+                    <p:commandButton id="submitBtn"
+                     action="#{studentCDIBean.handlePaidInternship()}"
+                     style="display:none"
+                     ajax="false" />
                 </form>
 
                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
                 <script>
                     function launchPayment() {
-//                        var eventId = document.getElementById("eventRegistrationForm:eventId").value;
-//                        var name = document.getElementById("eventRegistrationForm:participantName").value;
-                        var amount = 50000; // in paise = ₹500
+                        var internshipId = "#{internshipCDIBean.internship.id}";
+                        var internshipName = "#{internshipCDIBean.internship.title}";
+                        var amount = #{internshipCDIBean.internship.amount * 100};
 
                         var options = {
                             "key": "rzp_test_kS80NTezFBTFjA",
                             "amount": amount,
                             "currency": "INR",
-                            "name": "LgacyLink",
+                            "name": "Internify",
                             "description": "Event Registration Fee",
                             "image": "https://your-logo-url.com/logo.png",
                             "handler": function (response) {
-                                document.getElementById('internshipId').value = 1;
-                                document.getElementById('internshipName').value = "Frontend Developer";
-                                document.getElementById('totalAmount').value = amount;
+                                document.getElementById('internshipId').value = "#{internshipCDIBean.internship.id}";
+                                document.getElementById('totalAmount').value = "#{internshipCDIBean.internship.amount}";
                                 document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                                document.getElementById('razorpay-payment-form').submit();
+                                document.getElementById("razorpayForm:submitBtn").click();
                             },
                             "prefill": {
                                 "name": "sakshi",
@@ -196,6 +214,25 @@
                         rzp.open();
                     }
                 </script>
+
+                <script type="text/javascript">
+                    function checkLoginAndLaunchPayment() {
+                        var isLoggedIn = "#{studentCDIBean.loggedIn}" === "true";
+                        var isPaid = "#{internshipCDIBean.internship.paid}" === "true";
+
+                        if (!isLoggedIn) {
+                            window.location.href = 'login.xhtml'; // adjust the login path if needed
+                            return;
+                        }
+
+                        if (isPaid) {
+                            launchPayment();
+                        } else {
+                            document.getElementById("applyForm:applyBtn").click();
+                        }
+                    }
+                </script>
+
             </ui:define>
 
             <ui:define name="bottom">
