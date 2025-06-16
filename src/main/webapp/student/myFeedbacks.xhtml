@@ -66,7 +66,7 @@
 
                                         <p:column headerText="Actions" style="text-align: center">
                                             <h:panelGroup>
-                                                <h:commandLink title="Edit" styleClass="btn btn-sm btn-outline-success mx-1">
+                                                <h:commandLink title="Edit" action="#{studentCDIBean.getFeedbackById(feed.id)}" styleClass="btn btn-sm btn-outline-success mx-1">
                                                     <i class="fas fa-edit"></i>
                                                 </h:commandLink>
 

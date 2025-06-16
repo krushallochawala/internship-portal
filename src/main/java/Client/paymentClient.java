@@ -1,0 +1,62 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/WebServices/JerseyClient.java to edit this template
+ */
+package Client;
+
+import jakarta.ws.rs.ClientErrorException;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
+
+/**
+ * Jersey REST client generated for REST resource:paymentREST [api]<br>
+ * USAGE:
+ * <pre>
+ *        paymentClient client = new paymentClient();
+ *        Object response = client.XXX(...);
+ *        // do whatever with response
+ *        client.close();
+ * </pre>
+ *
+ * @author DELL
+ */
+public class paymentClient {
+
+    private WebTarget webTarget;
+    private Client client;
+    private static final String BASE_URI = Url.ClientURL;
+
+    public paymentClient() {
+        client = jakarta.ws.rs.client.ClientBuilder.newClient();
+        webTarget = client.target(BASE_URI).path("api");
+    }
+
+    public <T> T getAllPayments(GenericType<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("payment");
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T getPaymentsByCompany(GenericType<T> responseType, String companyId) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("paymentByCompany/{0}", new Object[]{companyId}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public Response addPayment(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("addPayment").request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+    }
+
+    public <T> T deletePayment(GenericType<T> responseType, String id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("delPayment/{0}", new Object[]{id}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public void close() {
+        client.close();
+    }
+    
+}

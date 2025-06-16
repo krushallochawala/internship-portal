@@ -10,11 +10,13 @@ import Client.educationClient;
 import Client.experienceClient;
 import Client.feedbackClient;
 import Client.internshipClient;
+import Client.paymentClient;
 import Client.studentClient;
 import Entity.Applications;
 import Entity.Bookmarks;
 import Entity.Education;
 import Entity.Internships;
+import Entity.Payments;
 import Entity.StudentFeedback;
 import Entity.Students;
 import Entity.WorkExperience;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.primefaces.model.file.UploadedFile;
@@ -51,13 +54,18 @@ public class studentCDIBean implements Serializable {
     educationClient eduClient = new educationClient();
     experienceClient expClient = new experienceClient();
     feedbackClient feedbackClient = new feedbackClient();
+    paymentClient paymentClient = new paymentClient();
 
     Students student = new Students();
+    Applications application = new Applications();
     Bookmarks bookmark = new Bookmarks();
     Education education = new Education();
     WorkExperience exp = new WorkExperience();
     StudentFeedback feedback = new StudentFeedback();
+    Payments payment = new Payments();
 
+    Integer internshipId;
+    
     UploadedFile profileImage;
     UploadedFile resume;
 
@@ -167,6 +175,30 @@ public class studentCDIBean implements Serializable {
 
     public void setFeedback(StudentFeedback feedback) {
         this.feedback = feedback;
+    }
+
+    public Integer getInternshipId() {
+        return internshipId;
+    }
+
+    public void setInternshipId(Integer internshipId) {
+        this.internshipId = internshipId;
+    }
+
+    public Applications getApplication() {
+        return application;
+    }
+
+    public void setApplication(Applications application) {
+        this.application = application;
+    }
+
+    public Payments getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payments payment) {
+        this.payment = payment;
     }
 
     @PostConstruct
@@ -577,6 +609,83 @@ public class studentCDIBean implements Serializable {
         feedbackClient.deleteFeedback(String.valueOf(id));
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience deleted successfully"));
         return null;
+    }
+    
+    public String addFeedback(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>(){}, String.valueOf(internshipId));
+        feedback.setStudentId(stud);
+        feedback.setInternshipId(internship);
+        feedbackClient.addFeedback(feedback);
+        
+        feedback = null;
+        internshipId = null;
+        return "/student/myFeedbacks.xhtml";
+    }
+    
+    public String getFeedbackById(int id){
+        feedback = feedbackClient.getFeedbackById(new GenericType<StudentFeedback>(){}, String.valueOf(id));
+        return "editFeedback.xhtml";
+    }
+    
+    public String editFeedback(){
+        feedback.setCreatedAt(new Date());
+        feedbackClient.updateFeedback(feedback);
+        return "myFeedbacks.xhtml";
+    }
+    
+    public boolean isLoggedIn(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        return studentId != null;
+    }
+    
+    public String applyInternship(int id){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>(){}, String.valueOf(id));
+        application.setStudentId(stud);
+        application.setInternshipId(internship);
+        application.setStatus("Pending");
+        application.setIsPaymentDone(false);
+        appClient.addApplication(application);
+        return "/student/applyStatus.xhtml";
+    }
+    
+    public String handlePaidInternship(){
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
+        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>(){}, String.valueOf(internshipId));
+        if (studentId == null) {
+            return "login.xhtml?faces-redirect=true";
+        }
+         
+        application = new Applications();
+        application.setInternshipId(internship);
+        application.setStudentId(stud);
+        application.setStatus("Pending");
+        application.setIsPaymentDone(true);
+        application.setIsPaymentDone(true);
+        appClient.addApplication(application);
+        
+        System.out.println("Application: " + application);
+        
+        payment = new Payments();
+        payment.setApplicationId(application);
+        payment.setInternshipId(internship);
+        payment.setStudentId(stud);
+        payment.setPaymentStatus("Success");
+        payment.setPaymentMethod("RazorPay");
+        
+        paymentClient.addPayment(payment);
+        return "/student/applyStatus.xhtml";
     }
 }
     
