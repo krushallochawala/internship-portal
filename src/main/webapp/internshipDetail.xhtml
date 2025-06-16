@@ -169,17 +169,17 @@
 
 
 
-                <form id="razorpayForm" action="/student/applyStatus" method="POST" style="display: none;">
-                    <input type="hidden" name="_token" value="#{csrf.token}" />
-                    <input type="hidden" id="internshipId" value="#{studentCDIBean.internshipId}" name="internshipId" />
-                    <input type="hidden" id="totalAmount" value="#{internshipCDIBean.internship.amount}" name="amount" />
-                    <input type="hidden" id="razorpay_payment_id" value="#{studentCDIBean.payment.transactionId}" name="razorpay_payment_id" />
-                    
-                    <p:commandButton id="submitBtn"
-                     action="#{studentCDIBean.handlePaidInternship()}"
-                     style="display:none"
-                     ajax="false" />
-                </form>
+                <h:form id="razorpayForm">
+                    <h:inputHidden id="internshipId" value="#{studentCDIBean.internshipId}" />
+                    <h:inputHidden id="totalAmount" value="#{studentCDIBean.amount}" />
+                    <h:inputHidden id="razorpay_payment_id" value="#{studentCDIBean.transactionId}" />
+
+                    <p:commandButton id="submitBtn" value="Submit"
+                                     action="#{studentCDIBean.handlePaidInternship()}"
+                                     style="display:none"
+                                     ajax="false"
+                                     />
+                </h:form>
 
                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -197,10 +197,11 @@
                             "description": "Event Registration Fee",
                             "image": "https://your-logo-url.com/logo.png",
                             "handler": function (response) {
-                                document.getElementById('internshipId').value = "#{internshipCDIBean.internship.id}";
-                                document.getElementById('totalAmount').value = "#{internshipCDIBean.internship.amount}";
-                                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                                document.getElementById("razorpayForm:submitBtn").click();
+                                document.getElementById("razorpayForm:internshipId").value = "#{internshipCDIBean.internship.id}";
+                                document.getElementById("razorpayForm:totalAmount").value = "#{internshipCDIBean.internship.amount}";
+                                document.getElementById("razorpayForm:razorpay_payment_id").value = response.razorpay_payment_id;
+
+                                document.getElementById("razorpayForm:submitBtn").click(); // ✅ this triggers JSF lifecycle
                             },
                             "prefill": {
                                 "name": "sakshi",
@@ -226,7 +227,17 @@
                         }
 
                         if (isPaid) {
-                            launchPayment();
+                            // Make AJAX call to check if education is filled
+                            fetch('http://localhost:55335/IntershipPortal-adminDashboard/resources/api/has-education/' + #{studentCDIBean.student.id})
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data === true) {
+                                            launchPayment(); // Launch Razorpay only if education is filled
+                                        } else {
+                                            alert("Please complete your education details before applying.");
+                                            window.location.href = "student/myProfile.xhtml";
+                                        }
+                                    });
                         } else {
                             document.getElementById("applyForm:applyBtn").click();
                         }

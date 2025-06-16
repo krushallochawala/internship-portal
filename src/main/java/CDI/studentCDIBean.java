@@ -32,8 +32,10 @@ import jakarta.ws.rs.core.GenericType;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -65,7 +67,9 @@ public class studentCDIBean implements Serializable {
     Payments payment = new Payments();
 
     Integer internshipId;
-    
+    double amount;
+    String transactionId;
+
     UploadedFile profileImage;
     UploadedFile resume;
 
@@ -201,6 +205,22 @@ public class studentCDIBean implements Serializable {
         this.payment = payment;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
     @PostConstruct
     public void init() {
         try {
@@ -214,6 +234,7 @@ public class studentCDIBean implements Serializable {
             }, String.valueOf(studentId));
             pendingCount = appClient.getPendingCountByStudent(new GenericType<Long>() {
             }, String.valueOf(studentId));
+            student = client.getStudentbyId(new GenericType<Students>(){}, String.valueOf(studentId));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error : " + e.getMessage());
@@ -351,8 +372,8 @@ public class studentCDIBean implements Serializable {
     public String gotoInternshipApply() {
         return "/student/applyStatus.xhtml";
     }
-    
-    public List<Applications> getMyApplications(){
+
+    public List<Applications> getMyApplications() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
         return appClient.getApplicationByStudent(new GenericType<List<Applications>>() {
@@ -377,46 +398,49 @@ public class studentCDIBean implements Serializable {
             return null;
         }
     }
-    
-    public String goToBookMarks(){
+
+    public String goToBookMarks() {
         return "/student/myBookmarks.xhtml";
     }
-    
-    public List<Bookmarks> getMyBookMarks(){
+
+    public List<Bookmarks> getMyBookMarks() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
-        return bookmarkClient.getBookMarksByStudent(new GenericType<List<Bookmarks>>(){}, String.valueOf(studentId));
+        return bookmarkClient.getBookMarksByStudent(new GenericType<List<Bookmarks>>() {
+        }, String.valueOf(studentId));
     }
-    
-    public String delBookMark(int id){
+
+    public String delBookMark(int id) {
         bookmarkClient.deleteBookMark(String.valueOf(id));
         return null;
     }
-    
-    public String goToMyProfile(){
+
+    public String goToMyProfile() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
         student = client.getStudentbyId(new GenericType<Students>() {
         }, String.valueOf(studentId));
         return "/student/myProfile.xhtml";
     }
-     
+
     public Gender[] getGenders() {
         return Gender.values();
     }
-    
-    public List<Education> getMyEducationList(){
+
+    public List<Education> getMyEducationList() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
-        return eduClient.getEducationByStudent(new GenericType<List<Education>>(){}, String.valueOf(studentId));
+        return eduClient.getEducationByStudent(new GenericType<List<Education>>() {
+        }, String.valueOf(studentId));
     }
-    
-    public List<WorkExperience> getMyExperienceList(){
+
+    public List<WorkExperience> getMyExperienceList() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
-        return expClient.getExperienceByStudent(new GenericType<List<WorkExperience>>(){}, String.valueOf(studentId));
+        return expClient.getExperienceByStudent(new GenericType<List<WorkExperience>>() {
+        }, String.valueOf(studentId));
     }
-    
+
     public String updateStudent() {
         profileImageError = null;
         resumeError = null;
@@ -533,38 +557,40 @@ public class studentCDIBean implements Serializable {
             return null;
         }
         client.updateStudent(student);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Student updated successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Student updated successfully"));
         return null;
     }
-    
-    public String updateEducation(Education edu){
+
+    public String updateEducation(Education edu) {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
-        Students stud = client.getStudentbyId(new GenericType<Students>(){},String.valueOf(studentId));
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
         edu.setStudentId(stud);
         eduClient.updateEducation(edu);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Education Details updated successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Education Details updated successfully"));
         return null;
     }
-    
-    public String addEducation(){
+
+    public String addEducation() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
-        Students stud = client.getStudentbyId(new GenericType<Students>(){},String.valueOf(studentId));
+        Students stud = client.getStudentbyId(new GenericType<Students>() {
+        }, String.valueOf(studentId));
         education.setStudentId(stud);
         eduClient.addEducation(education);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Education Details added successfully"));
-        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Education Details added successfully"));
+
         education = new Education();
         return null;
     }
-    
-    public String deleteEducation(int id){
+
+    public String deleteEducation(int id) {
         eduClient.deleteEducation(String.valueOf(id));
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Education Details deleted successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Education Details deleted successfully"));
         return null;
     }
-    
+
     public String updateExperience(WorkExperience exp) {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
@@ -572,10 +598,10 @@ public class studentCDIBean implements Serializable {
         }, String.valueOf(studentId));
         exp.setStudentId(stud);
         expClient.updateExperience(exp);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience updated successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Experience updated successfully"));
         return null;
     }
-    
+
     public String addExperience() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
@@ -583,72 +609,85 @@ public class studentCDIBean implements Serializable {
         }, String.valueOf(studentId));
         exp.setStudentId(stud);
         expClient.addExperience(exp);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience added successfully"));
-        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Experience added successfully"));
+
         exp = new WorkExperience();
         return null;
     }
-    
+
     public String deleteExperience(int id) {
         expClient.deleteExperience(String.valueOf(id));
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience deleted successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Experience deleted successfully"));
         return null;
     }
-    
-    public String gotoMyFeedbacks(){
+
+    public String gotoMyFeedbacks() {
         return "/student/myFeedbacks.xhtml";
     }
-    
-    public List<StudentFeedback> getFeedbacksByStudent(){
+
+    public List<StudentFeedback> getFeedbacksByStudent() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
-        return feedbackClient.getFeedbackByStudent(new GenericType<List<StudentFeedback>>(){}, String.valueOf(studentId));
+        return feedbackClient.getFeedbackByStudent(new GenericType<List<StudentFeedback>>() {
+        }, String.valueOf(studentId));
     }
-    
-    public String deleteFeedback(int id){
+
+    public String deleteFeedback(int id) {
         feedbackClient.deleteFeedback(String.valueOf(id));
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success","Experience deleted successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Experience deleted successfully"));
         return null;
     }
-    
-    public String addFeedback(){
+
+    public String addFeedback() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
         Students stud = client.getStudentbyId(new GenericType<Students>() {
         }, String.valueOf(studentId));
-        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>(){}, String.valueOf(internshipId));
+        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>() {
+        }, String.valueOf(internshipId));
         feedback.setStudentId(stud);
         feedback.setInternshipId(internship);
         feedbackClient.addFeedback(feedback);
-        
+
         feedback = null;
         internshipId = null;
         return "/student/myFeedbacks.xhtml";
     }
-    
-    public String getFeedbackById(int id){
-        feedback = feedbackClient.getFeedbackById(new GenericType<StudentFeedback>(){}, String.valueOf(id));
+
+    public String getFeedbackById(int id) {
+        feedback = feedbackClient.getFeedbackById(new GenericType<StudentFeedback>() {
+        }, String.valueOf(id));
         return "editFeedback.xhtml";
     }
-    
-    public String editFeedback(){
+
+    public String editFeedback() {
         feedback.setCreatedAt(new Date());
         feedbackClient.updateFeedback(feedback);
         return "myFeedbacks.xhtml";
     }
-    
-    public boolean isLoggedIn(){
+
+    public boolean isLoggedIn() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
         return studentId != null;
     }
-    
-    public String applyInternship(int id){
+
+    public String applyInternship(int id) {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
         Students stud = client.getStudentbyId(new GenericType<Students>() {
         }, String.valueOf(studentId));
-        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>(){}, String.valueOf(id));
+
+        List<Education> hasEducation = eduClient.getEducationByStudent(new GenericType<List<Education>>() {
+        }, String.valueOf(studentId));
+        if (hasEducation == null || hasEducation.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Please complete your education details before applying.", null));
+            return "/student/myProfile.xhtml?faces-redirect=true";
+        }
+
+        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>() {
+        }, String.valueOf(id));
         application.setStudentId(stud);
         application.setInternshipId(internship);
         application.setStatus("Pending");
@@ -656,36 +695,60 @@ public class studentCDIBean implements Serializable {
         appClient.addApplication(application);
         return "/student/applyStatus.xhtml";
     }
-    
-    public String handlePaidInternship(){
+
+    public boolean isEducationFilled() {
+        Integer studentId = (Integer) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("studentId");
+
+        if (studentId == null) {
+            return false;
+        }
+
+        List<Education> educations = eduClient.getEducationByStudent(
+                new GenericType<List<Education>>() {
+        }, String.valueOf(studentId));
+
+        return educations != null && !educations.isEmpty();
+    }
+
+    public String handlePaidInternship() {
         Integer studentId = (Integer) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("studentId");
         Students stud = client.getStudentbyId(new GenericType<Students>() {
         }, String.valueOf(studentId));
-        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>(){}, String.valueOf(internshipId));
+        Internships internship = internshipClient.getInternshipById(new GenericType<Internships>() {
+        }, String.valueOf(internshipId));
         if (studentId == null) {
             return "login.xhtml?faces-redirect=true";
         }
-         
+//
+//        List<Education> hasEducation = eduClient.getEducationByStudent(new GenericType<List<Education>>() {
+//        }, String.valueOf(studentId));
+//        if (hasEducation == null || hasEducation.isEmpty()) {
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Please complete your education details before applying.", null));
+//            return "/student/myProfile.xhtml?faces-redirect=true";
+//        }
+
         application = new Applications();
         application.setInternshipId(internship);
         application.setStudentId(stud);
         application.setStatus("Pending");
         application.setIsPaymentDone(true);
         application.setIsPaymentDone(true);
-        appClient.addApplication(application);
-        
-        System.out.println("Application: " + application);
-        
+        Applications myapp = appClient.addApplicationByStudent(application);
+
         payment = new Payments();
-        payment.setApplicationId(application);
+        payment.setApplicationId(myapp);
         payment.setInternshipId(internship);
         payment.setStudentId(stud);
-        payment.setPaymentStatus("Success");
+        payment.setAmount(BigDecimal.valueOf(amount));
+        payment.setTransactionId(transactionId);
+        payment.setPaymentDate(new Date());
+        payment.setPaymentStatus("Completed");
         payment.setPaymentMethod("RazorPay");
-        
+
         paymentClient.addPayment(payment);
         return "/student/applyStatus.xhtml";
     }
 }
-    

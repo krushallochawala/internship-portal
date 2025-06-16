@@ -4,6 +4,7 @@
  */
 package Client;
 
+import Entity.Applications;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.WebTarget;
@@ -65,6 +66,10 @@ public class applicationsClient {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("app/{0}", new Object[]{id}));
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public Applications addApplicationByStudent(Applications application) throws ClientErrorException {
+        return webTarget.path("addAppByStudent").request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(application, jakarta.ws.rs.core.MediaType.APPLICATION_JSON), Applications.class);
     }
 
     public <T> T getPendingCountByStudent(GenericType<T> responseType, String studentId) throws ClientErrorException {
