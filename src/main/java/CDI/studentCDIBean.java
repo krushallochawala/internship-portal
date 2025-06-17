@@ -29,6 +29,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.resource.spi.work.WorkException;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -234,7 +235,8 @@ public class studentCDIBean implements Serializable {
             }, String.valueOf(studentId));
             pendingCount = appClient.getPendingCountByStudent(new GenericType<Long>() {
             }, String.valueOf(studentId));
-            student = client.getStudentbyId(new GenericType<Students>(){}, String.valueOf(studentId));
+            student = client.getStudentbyId(new GenericType<Students>() {
+            }, String.valueOf(studentId));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error : " + e.getMessage());
@@ -693,6 +695,14 @@ public class studentCDIBean implements Serializable {
         application.setStatus("Pending");
         application.setIsPaymentDone(false);
         appClient.addApplication(application);
+//        Response res = appClient.applyToInternship(application);
+//        if (res.getStatus() == 200 || res.getStatus() == 204) {
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Application submitted successfully!", null));
+//        } else {
+//            FacesContext.getCurrentInstance().addMessage(null,
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to apply for internship. Please try again.", null));
+//        }
         return "/student/applyStatus.xhtml";
     }
 

@@ -44,7 +44,7 @@ public class loginREST {
         if (company != null) {
             String token = JwtUtil.generateToken(company.getEmail(),company.getId());
             return Response.ok("{\"token\": \"" + token + "\"}").build();
-        } else {
+        } else {    
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("{\"error\": \"Invalid email or password\"}")
                     .build();

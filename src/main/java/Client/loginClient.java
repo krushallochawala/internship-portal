@@ -25,7 +25,7 @@ public class loginClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:55335/internship-portal/resources";
+    private static final String BASE_URI = "http://localhost:8080/online-internship-portal/resources";
 
     public loginClient() {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();

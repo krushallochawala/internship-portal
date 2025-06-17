@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.Response;
  *        client.close();
  * </pre>
  *
- * @author DELL
+ * @author KRUSHAL
  */
 public class studentClient {
 
@@ -35,6 +35,17 @@ public class studentClient {
 
     public Response addStudent(Object requestEntity) throws ClientErrorException {
         return webTarget.path("addStudent").request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+    }
+
+    public boolean updateStudentPassword(String email, String password) {
+        Response response = webTarget
+                .path("resetPwd")
+                .path(email)
+                .path(password)
+                .request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                .put(jakarta.ws.rs.client.Entity.entity("", jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
+
+        return response.getStatus() == 200 && response.readEntity(Boolean.class);
     }
 
     public <T> T getStudentbyId(GenericType<T> responseType, String id) throws ClientErrorException {
@@ -63,8 +74,14 @@ public class studentClient {
         return webTarget.path(java.text.MessageFormat.format("delStudent/{0}", new Object[]{id})).request().delete(Response.class);
     }
 
+    public <T> T getStudentByEmail(GenericType<T> responseType, String email) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("studentByEmail/{0}", new Object[]{email}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void close() {
         client.close();
     }
-    
+
 }

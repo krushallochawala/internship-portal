@@ -5,19 +5,25 @@
 package CDI;
 
 import Client.loginClient;
+import Client.studentClient;
 import DTO.LoginRequest;
 import Entity.Roles;
+import Entity.Students;
 import Utils.JwtUtil;
+import Utils.EmailUtil;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.ws.rs.core.GenericType;
 import io.jsonwebtoken.Claims;
+import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -28,11 +34,40 @@ import java.util.List;
 public class loginCDIBean implements Serializable {
 
     loginClient loginClient = new loginClient();
+    studentClient studentClient = new studentClient();
     LoginRequest loginRequest = new LoginRequest();
 
     String errorMessage;
     String token;
     String profileEmail;
+
+    String newPassword;
+    String confirmPassword;
+    String forgotEmail;
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getForgotEmail() {
+        return forgotEmail;
+    }
+
+    public void setForgotEmail(String forgotEmail) {
+        this.forgotEmail = forgotEmail;
+    }
 
     public String getErrorMessage() {
         return errorMessage;
@@ -66,7 +101,24 @@ public class loginCDIBean implements Serializable {
         this.loginRequest = loginRequest;
     }
 
+    @PostConstruct
+    public void init() {
+        String uri = FacesContext.getCurrentInstance().getExternalContext()
+                .getRequestServletPath(); // e.g. "/resetPassword.xhtml"
+
+        if (uri != null && uri.contains("resetPassword.xhtml")) {
+            String emailParam = FacesContext.getCurrentInstance()
+                    .getExternalContext()
+                    .getRequestParameterMap()
+                    .get("email");
+            if (emailParam != null) {
+                this.forgotEmail = emailParam;
+            }
+        }
+    }
+
     public String login() {
+        System.out.println("Login");
         try {
             Response res = loginClient.loginStudent(loginRequest);
             if (res.getStatus() == 200) {
@@ -124,6 +176,60 @@ public class loginCDIBean implements Serializable {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void sendResetLink() {
+        try {
+            GenericType<Students> type = new GenericType<Students>() {
+            };
+            Students student = studentClient.getStudentByEmail(type, forgotEmail);
+            if (student == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "No user found with this email.", null));
+                return;
+            }
+            // Construct reset link
+            String resetLink = "http://localhost:8080/online-internship-portal/resetPassword.xhtml?email=" + forgotEmail;
+
+            // Send email
+            String subject = "Reset Your Password";
+            String body = "Click the link below to reset your password:\n" + resetLink;
+            EmailUtil.sendEmail(forgotEmail, subject, body); // Create this utility class
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Reset link sent to your email.", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong. Try again.", null));
+            e.printStackTrace();
+        }
+    }
+
+    public String resetPassword() {
+        if (newPassword == null || !newPassword.equals(confirmPassword)) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords do not match.", null));
+            return null;
+        }
+
+        try {
+            System.out.println("Forgot Email: " + forgotEmail);
+            boolean updated = studentClient.updateStudentPassword(forgotEmail, newPassword);
+            if (updated) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Password updated successfully.", null));
+                return "login.xhtml?faces-redirect=true";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to update password.", null));
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error occurred.", null));
             return null;
         }
     }

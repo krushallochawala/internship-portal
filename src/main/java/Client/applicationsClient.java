@@ -109,6 +109,13 @@ public class applicationsClient {
         resource = resource.path(java.text.MessageFormat.format("appsCountByStudent/{0}", new Object[]{studentId}));
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
+    
+    public Response applyToInternship(Object applicationEntity) throws ClientErrorException {
+        return webTarget
+                .path("applyInternship")
+                .request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                .post(jakarta.ws.rs.client.Entity.entity(applicationEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
+    }
 
     public void close() {
         client.close();

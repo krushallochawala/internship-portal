@@ -147,7 +147,8 @@ public class Students implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId")
     @JsonbTransient
     private Collection<Applications> applicationsCollection;
-
+ 
+  
     public Students() {
     }
 
@@ -208,7 +209,6 @@ public class Students implements Serializable {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
-
 
     public String getPortfolioUrl() {
         return portfolioUrl;
@@ -386,5 +386,5 @@ public class Students implements Serializable {
     public void setStudentFeedbackCollection(Collection<StudentFeedback> studentFeedbackCollection) {
         this.studentFeedbackCollection = studentFeedbackCollection;
     }
-    
+
 }

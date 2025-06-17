@@ -44,12 +44,12 @@
                                             <h:form>
                                             <p:menuButton value="#{loginCDIBean.profileEmail}" icon="pi pi-user"
                                                           styleClass="dropdown-toggle profile-text">
-
-                                                <p:menuitem value="My Profile" icon="pi pi-user" action="#{studentCDIBean.goToMyProfile()}"/>
+                                                
                                                 <p:menuitem value="Dashboard" icon="pi pi-home" action="#{studentCDIBean.goToDashboard()}" ajax="false"/>
+                                                <p:menuitem value="My Profile" icon="pi pi-user" action="#{studentCDIBean.goToMyProfile()}" ajax="false"/>
                                                 <p:menuitem value="Apply Status" icon="pi pi-check-square" action="#{studentCDIBean.gotoInternshipApply()}" ajax="false" />
-                                                <p:menuitem value="Saved Internship" icon="pi pi-briefcase" action="#{studentCDIBean.goToBookMarks()}" />
-                                                <p:menuitem value="Feedbacks" icon="pi pi-user-edit" action="#{studentCDIBean.gotoMyFeedbacks()}" />
+                                                <p:menuitem value="Saved Internship" icon="pi pi-briefcase" action="#{studentCDIBean.goToBookMarks()}" ajax="false" />
+                                                <p:menuitem value="Feedbacks" icon="pi pi-user-edit" action="#{studentCDIBean.gotoMyFeedbacks()}" ajax="false" />
                                                 <p:menuitem value="Log Out" icon="pi pi-sign-out" action="#{loginCDIBean.logout()}" ajax="false" />
                                             </p:menuButton>
                                             </h:form>

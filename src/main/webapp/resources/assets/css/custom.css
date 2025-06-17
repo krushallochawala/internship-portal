@@ -654,3 +654,11 @@ body .ui-inputfield{
 .ui-rating-star-on a {
     color: #FFD700 !important;  /* Gold */
 }
+
+.btnStyle{
+    background-color: #2042e3 !important;
+}
+
+.textStyle{
+    color: #2042e3 !important;
+}

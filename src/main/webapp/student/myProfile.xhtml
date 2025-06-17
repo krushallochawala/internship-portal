@@ -89,7 +89,7 @@
                                                 <p:fileUpload id="profile" value="#{studentCDIBean.profileImage}" mode="simple" auto="false" 
                                                               accept="image/*"/>
                                                 <br />
-                                                <img src="#{'http://localhost:55335/IntershipPortal-adminDashboard/resources/api/uploads/studentProfiles/'.concat(studentCDIBean.student.profileImage)}"
+                                                <img src="#{'http://localhost:8080/Online-Internship-Portal-AdminDashboard/resources/api/uploads/studentProfiles/'.concat(studentCDIBean.student.profileImage)}"
                                                      width="100" height="100" style="margin-top:20px; border: 1px solid #ccc; padding: 4px;" />
                                                 <h:outputText value="#{studentCDIBean.profileImageError}" style="color:red;" rendered="#{not empty studentCDIBean.profileImageError}" />
                                             </div>

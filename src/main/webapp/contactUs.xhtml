@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
 
     <body>
 
@@ -36,40 +38,62 @@
                             <div class="row">
                                 <div class="col-lg-7 col-12">
                                     <div class="form-main">
-                                        <form class="form" method="post" action="assets/mail/mail.php">
+                                        <h:form class="form">
+                                            <p:growl id="growl" showDetail="true" life="3000" globalOnly="true"/>
                                             <div class="row">
                                                 <div class="col-lg-6 col-12">
                                                     <div class="form-group">
-                                                        <input name="name" type="text" placeholder="Your Name" required="true" />
+                                                        <p:inputText value="#{contactCDIBean.name}" required="true" 
+                                                                     requiredMessage="Name is required"
+                                                                     styleClass="form-control" 
+                                                                     placeholder="Your Name" />
+                                                        <h:message for="@previous" styleClass="text-danger"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-12">
                                                     <div class="form-group">
-                                                        <input name="subject" type="text" placeholder="Your Subject" required="true" />
+                                                        <p:inputText value="#{contactCDIBean.subject}" required="true" 
+                                                                     requiredMessage="Subject is required"
+                                                                     styleClass="form-control" 
+                                                                     placeholder="Your Subject" />
+                                                        <h:message for="@previous" styleClass="text-danger"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-12">
                                                     <div class="form-group">
-                                                        <input name="email" type="email" placeholder="Your Email" required="true" />
+                                                        <p:inputText value="#{contactCDIBean.email}" required="true"
+                                                                     requiredMessage="Email is required"
+                                                                     styleClass="form-control" 
+                                                                     placeholder="Your Email" />
+                                                        <h:message for="@previous" styleClass="text-danger"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-12">
                                                     <div class="form-group">
-                                                        <input name="phone" type="text" placeholder="Your Phone" required="true" />
+                                                        <p:inputText value="#{contactCDIBean.phone}" required="true" 
+                                                                     requiredMessage="Phone is required"
+                                                                     styleClass="form-control" 
+                                                                     placeholder="Your Phone" />
+                                                        <h:message for="@previous" styleClass="text-danger"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group message">
-                                                        <textarea name="message" placeholder="Your Message"></textarea>
+                                                        <p:inputTextarea value="#{contactCDIBean.message}" 
+                                                                         styleClass="form-control" 
+                                                                         placeholder="Your Message" />
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group button">
-                                                        <button type="submit" class="btn ">Submit Message</button>
+                                                        <p:commandButton value="Submit Message" 
+                                                                         action="#{contactCDIBean.sendEmail}"
+                                                                         update="@form growl"
+                                                                         styleClass="btn" />
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </h:form>
                                     </div>
                                 </div>
                                 <div class="col-lg-5 col-12">
